@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c8b168dbc921334588fea9a020b3142, type: 3}
+  m_Name: BLT
+  m_EditorClassIdentifier: 
+  name: BLT
+  artwork: {fileID: 21300000, guid: bb82788cde4682548a047e7a0cc368ec, type: 3}
+  ingredientList:
+  - {fileID: 11400000, guid: 981a78c9bc970944185e7febfb169db5, type: 2}
+  - {fileID: 11400000, guid: 0d3a1d64c21d3094995bc37cf1fa685e, type: 2}
+  - {fileID: 11400000, guid: 43bb18212a58e9a4a83930270a13df88, type: 2}
+  - {fileID: 11400000, guid: 7caf74777bf2f17499eb632e04f2d46d, type: 2}
+  pointValue: 40
