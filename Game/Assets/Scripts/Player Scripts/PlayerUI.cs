@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Photon.Pun;
-using Photon.Realtime;
 
 public class PlayerUI : MonoBehaviour {
     [Header("Button References")]
@@ -19,23 +17,21 @@ public class PlayerUI : MonoBehaviour {
     public GameObject nextActionButton;
     public GameObject turnPhasePanel;
 
-    public Dropdown resolutionDropdown;
+    // public Dropdown resolutionDropdown;
     Resolution[] resolutions;
 
     // References
-    private GameManager gameManager;
+    [SerializeField] private GameManager gameManager;
 
     private PlayerController playerController;
     private PlayerHand playerHand;
 
     private void Awake() {
         // References
-        gameManager = PhotonView.Find(991).GetComponent<GameManager>();
-
         playerController = GetComponent<PlayerController>();
         playerHand = GetComponent<PlayerHand>();
 
-        int currentResolutionIndex = 0;
+        /* int currentResolutionIndex = 0;
         int currentRefreshRate = Screen.currentResolution.refreshRate;
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
@@ -51,7 +47,7 @@ public class PlayerUI : MonoBehaviour {
 
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
+        resolutionDropdown.RefreshShownValue(); */
     }
 
     #region Menu Functions
@@ -74,7 +70,7 @@ public class PlayerUI : MonoBehaviour {
 
 
     public void Leave() {
-        GameManager.Instance.LeaveRoom();
+        // GameManager.Instance.LeaveRoom();
     }
 
     public void ChooseDeckPhase() {
@@ -95,25 +91,17 @@ public class PlayerUI : MonoBehaviour {
         swapPhaseButtons.SetActive(true);
         UndoButton.SetActive(false);
 
-        foreach (GameObject card in playerHand.swapCards) {
+        /* foreach (GameObject card in playerHand.swapCards) {
             if (!card.TryGetComponent<PhotonView>(out PhotonView PV)) {
                 card.GetComponent<IngredientCardInteractibility>().ResetChosen();
             }
-        }
+        } */
         playerHand.swapCards.Clear();
     }
 
     public void StartTurnUI() {
         turnPhasePanel.SetActive(true);
         swapPhaseButtons.SetActive(true);
-    }
-
-    public void RestartGame() {
-        PhotonNetwork.LoadLevel("Room");
-    }
-
-    public void UpdateSliderForOthers() {
-        gameManager.PV.RPC("RPC_UpdateSliderForOthers", RpcTarget.Others, PhotonNetwork.LocalPlayer.ActorNumber - 1, playerController.pointSlider.value);
     }
 
     public void SetVolume(float volume) {

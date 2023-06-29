@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Photon.Pun;
-using Photon.Realtime;
 
 public class IngredientCardInteractibility : MonoBehaviour {
     // References
@@ -31,7 +29,6 @@ public class IngredientCardInteractibility : MonoBehaviour {
         playerHand = player.GetComponent<PlayerHand>();
         playerController = player.GetComponent<PlayerController>();
 
-        if (!TryGetComponent<PhotonView>(out PhotonView PV)) { return; }
         popupCard = player.transform.GetChild(0).GetChild(2).GetChild(1).gameObject;
         greyedOutPanel = player.transform.GetChild(0).GetChild(2).GetChild(0).gameObject;
     }
@@ -50,7 +47,6 @@ public class IngredientCardInteractibility : MonoBehaviour {
             }
         }
         else if (playerController.inDeckPhase) {
-            if (TryGetComponent<PhotonView>(out PhotonView PV)) { return; }
 
             deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(GetComponent<IngredientCardDisplay>().card));
             gameObject.SetActive(false);
@@ -72,22 +68,18 @@ public class IngredientCardInteractibility : MonoBehaviour {
         greyedOutPanel.SetActive(false);
     }
 
-    [PunRPC]
-    private void RPC_ChangeNetworkCard(int cardDatabaseIndex, int viewID) {
-        GameObject networkCard = PhotonView.Find(viewID).gameObject;
-        networkCard.GetComponent<IngredientCardDisplay>().card = cardDatabase.ingredientCard[cardDatabaseIndex];
-        networkCard.GetComponent<IngredientCardDisplay>().RefreshCard();
+    private void ChangeCard(int cardDatabaseIndex) {
+        // networkCard.GetComponent<IngredientCardDisplay>().card = cardDatabase.ingredientCard[cardDatabaseIndex];
+        // networkCard.GetComponent<IngredientCardDisplay>().RefreshCard();
     }
 
     public void HoverOn() {
-        if (TryGetComponent<PhotonView>(out PhotonView PV)) { return; }
 
         transform.position = new Vector2(transform.position.x, 250 * transform.lossyScale.y);
         transform.localScale = new Vector2(1, 1);
     }
 
     public void HoverOff() {
-        if (TryGetComponent<PhotonView>(out PhotonView PV)) { return; }
         if (lockedIn) { return; }
 
         transform.position = new Vector2(transform.position.x, 0);

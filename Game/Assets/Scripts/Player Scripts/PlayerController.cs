@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Photon.Pun;
-using Photon.Realtime;
 
 public class PlayerController : MonoBehaviour {
     // References
-    private GameManager gameManager;
-    private DeckManager deckManager;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private DeckManager deckManager;
 
     private PlayerUI playerUI;
     private PlayerHand playerHand;
 
-    public Slider pointSlider;
+    // public Slider pointSlider;
 
     [HideInInspector] public bool isTurn;
     [HideInInspector] public int phase;
@@ -26,9 +24,6 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake() {
         // References
-        gameManager = PhotonView.Find(991).GetComponent<GameManager>();
-        deckManager = PhotonView.Find(990).GetComponent<DeckManager>();
-
         playerUI = GetComponent<PlayerUI>();
         playerHand = GetComponent<PlayerHand>();
     }
@@ -37,34 +32,28 @@ public class PlayerController : MonoBehaviour {
         isTurn = true;
         phase = 0;
         NextPhase();
-        deckManager.PV.RequestOwnership();
         playerUI.StartTurnUI();
     }
 
     public void NextPhase() {
-        phase++;
-
-        if (phase == 1) {
+        if (phase == 0) {
             // Start Trade/Deck Phase
         }
-        else if (phase == 2) {
+        else if (phase == 1) {
             playerUI.UndoButton.SetActive(false);
             StartRecipePhase();
         }
-        else if (phase == 3) {
+        else if (phase == 2) {
             EndTurn();
         }
+
+        phase++;
     }
 
     private void EndTurn() {
-        if (!(PhotonNetwork.PlayerList.Length == 1)) {
-            isTurn = false;
-            gameManager.StartNextTurn(PhotonNetwork.LocalPlayer.ActorNumber);
-            playerUI.turnPhasePanel.SetActive(false);
-        }
-        else {
-            gameManager.StartNextTurn(0);
-        }
+        isTurn = false;
+        gameManager.StartNextTurn(1); // 1 is first AI since Player is player[0]
+        playerUI.turnPhasePanel.SetActive(false);
     }
 
     private void StartRecipePhase() {

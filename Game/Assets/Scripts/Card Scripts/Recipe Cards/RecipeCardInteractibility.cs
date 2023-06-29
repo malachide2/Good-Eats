@@ -1,25 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Photon.Pun;
-using Photon.Realtime;
 
 public class RecipeCardInteractibility : MonoBehaviour {
     [SerializeField] private GameObject popupCard;
     [SerializeField] private GameObject greyedOutPanel;
 
     public void HoverOn() {
-        if (TryGetComponent<PhotonView>(out PhotonView PV)) { return; }
-
         transform.position = new Vector2(transform.position.x, 250*transform.lossyScale.y);
         transform.localScale = new Vector2(1, 1);
     }
 
     public void HoverOff() {
-        if (TryGetComponent<PhotonView>(out PhotonView PV)) { return; }
-
         transform.position = new Vector2(transform.position.x, 0);
         transform.localScale = new Vector2(0.75f, 0.75f);
     }

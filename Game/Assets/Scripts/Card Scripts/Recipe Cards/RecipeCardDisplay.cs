@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+// using UnityEngine.UI;
+// using TMPro;
 
 public class RecipeCardDisplay : MonoBehaviour {
     public RecipeCard card;
 
-    public TextMeshProUGUI nameText;
+    /* public TextMeshProUGUI nameText;
     public Image artworkImage;
     [SerializeField] private TextMeshProUGUI[] ingredientTexts;
-    public TextMeshProUGUI pointValueText;
+    public TextMeshProUGUI pointValueText; */
 
     private void OnEnable() {
         RefreshCard();
     }
 
     public void RefreshCard() {
-        nameText.text = card.name;
+        /* nameText.text = card.name;
         artworkImage.sprite = card.artwork;
         pointValueText.text = card.pointValue.ToString();
 
@@ -28,6 +28,6 @@ public class RecipeCardDisplay : MonoBehaviour {
         for (int i = 0; i < card.ingredientList.Length; i++) {
             ingredientTexts[i].gameObject.SetActive(true);
             ingredientTexts[i].text = card.ingredientList[i].name;
-        }
+        } */
     }
 }
