@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
     // References
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private DeckManager deckManager;
+    [SerializeField] private GameObject gameManagerGO;
+    private GameManager gameManager;
+    private DeckManager deckManager;
 
     private PlayerUI playerUI;
     private PlayerHand playerHand;
@@ -24,6 +25,9 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake() {
         // References
+        gameManager = gameManagerGO.GetComponent<GameManager>();
+        deckManager = gameManagerGO.GetComponent<DeckManager>();
+
         playerUI = GetComponent<PlayerUI>();
         playerHand = GetComponent<PlayerHand>();
     }

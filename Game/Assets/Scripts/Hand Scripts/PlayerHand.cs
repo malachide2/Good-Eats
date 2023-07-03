@@ -6,10 +6,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerHand : MonoBehaviour {
-    [SerializeField] private GameObject playerHand;
-
     // References
-    [SerializeField] private GameManager gameManager;
+    [SerializeField] private GameObject gameManagerGO;
+    private GameManager gameManager;
     private DeckManager deckManager;
     private CardDatabase cardDatabase;
 
@@ -24,17 +23,18 @@ public class PlayerHand : MonoBehaviour {
 
     private void Awake() {
         // References
+        gameManager = gameManagerGO.GetComponent<GameManager>();
+        deckManager = gameManagerGO.GetComponent<DeckManager>();
+        cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
+
         playerController = GetComponent<PlayerController>();
     }
 
-    #region Start Game Functions
-    public IEnumerator StartingDrawRoutine() {
-        yield return new WaitForSeconds(0.4f); // Delay to Let Other Players Draw One at a Time
+    public void StartingDraw() {
         // Draw Cards
         DrawIngredientCards(6);
         DrawRecipeCard();
     }
-    #endregion
 
     #region Draw Card Functions
     public void DrawIngredientCards(int amount) {
@@ -47,7 +47,7 @@ public class PlayerHand : MonoBehaviour {
             foreach (GameObject blankCard in ingredientCards) {
                 if (blankCard.activeInHierarchy) { continue; }
 
-                blankCard.GetComponent<IngredientCardDisplay>().card = cardDrawn;
+                blankCard.GetComponent<IngredientCardInteractibility>().card = cardDrawn;
                 blankCard.SetActive(true);
                 break;
             }
@@ -60,7 +60,7 @@ public class PlayerHand : MonoBehaviour {
         deckManager.recipeCardDeck.RemoveAt(0);
 
         // Set Blank Card Active & Assign the Card
-        recipeCard.GetComponent<RecipeCardDisplay>().card = cardDrawn;
+        recipeCard.GetComponent<RecipeCardInteractibility>().card = cardDrawn;
         recipeCard.SetActive(true);
     }
     #endregion
@@ -70,8 +70,8 @@ public class PlayerHand : MonoBehaviour {
 
         if (gameManager.numberOfPlayers == 2) { // If one card is in trade pile, other is in hand // doesn't do anything
 
-            IngredientCardDisplay cardDisplay1 = swapCards[0].GetComponent<IngredientCardDisplay>();
-            IngredientCardDisplay cardDisplay2 = swapCards[1].GetComponent<IngredientCardDisplay>();
+            IngredientCardInteractibility cardDisplay1 = swapCards[0].GetComponent<IngredientCardInteractibility>();
+            IngredientCardInteractibility cardDisplay2 = swapCards[1].GetComponent<IngredientCardInteractibility>();
 
             IngredientCard card1 = cardDisplay1.card;
 
@@ -105,17 +105,17 @@ public class PlayerHand : MonoBehaviour {
 
     public void CheckRecipeCompletion() {
         List<GameObject> correctIngredients = new List<GameObject>();
-        List<IngredientCard> ingredientsInRecipe = new List<IngredientCard>(recipeCard.GetComponent<RecipeCardDisplay>().card.ingredientList);
+        List<IngredientCard> ingredientsInRecipe = new List<IngredientCard>(recipeCard.GetComponent<RecipeCardInteractibility>().card.ingredientList);
         
 
         for (int i = 0; i < ingredientCards.Length; i++) {
             bool bigContinue = false;
             if (!ingredientCards[i].activeInHierarchy) { continue; } // Skip the Card
 
-            IngredientCard thisCard = ingredientCards[i].GetComponent<IngredientCardDisplay>().card;
+            IngredientCard thisCard = ingredientCards[i].GetComponent<IngredientCardInteractibility>().card;
 
             foreach (GameObject correctIngredientCard in correctIngredients) {
-                if (thisCard == correctIngredientCard.GetComponent<IngredientCardDisplay>().card) {
+                if (thisCard == correctIngredientCard.GetComponent<IngredientCardInteractibility>().card) {
                     bigContinue = true; // Skip the Card
                     break;
                 }
@@ -136,12 +136,12 @@ public class PlayerHand : MonoBehaviour {
                 gameManager.EndGame();
             } */
 
-            deckManager.recipeCardDeck.Add(cardDatabase.FindRecipeCard(recipeCard.GetComponent<RecipeCardDisplay>().card));
+            deckManager.recipeCardDeck.Add(cardDatabase.FindRecipeCard(recipeCard.GetComponent<RecipeCardInteractibility>().card));
             recipeCard.SetActive(false);
             DrawRecipeCard();
 
             foreach (GameObject correctIngredient in correctIngredients) {
-                deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(correctIngredient.GetComponent<IngredientCardDisplay>().card));
+                deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(correctIngredient.GetComponent<IngredientCardInteractibility>().card));
                 correctIngredient.SetActive(false);
             }
 

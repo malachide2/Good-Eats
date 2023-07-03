@@ -8,11 +8,12 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
     // References
     public static GameManager Instance;
-    [SerializeField] private DeckManager deckManager;
-    [SerializeField] private EnemyHand enemyHand;
+    private DeckManager deckManager;
 
-    [SerializeField] private GameObject myPlayerGO;
-    private GameObject myPlayer;
+    [SerializeField] private GameObject myPlayer;
+    private PlayerController playerController;
+    private PlayerHand playerHand; 
+    // [SerializeField] private EnemyHand enemyHand;
 
     public int numberOfPlayers = 2;
 
@@ -28,28 +29,26 @@ public class GameManager : MonoBehaviour {
 
         // References
         Instance = this;
-        myPlayer = Instantiate(myPlayerGO, Vector3.zero, Quaternion.identity);
+        deckManager = GetComponent<DeckManager>();
 
-        // Start Game
-        StartCoroutine(StartGameRoutine());
+        playerController = myPlayer.GetComponent<PlayerController>();
+        playerHand = myPlayer.GetComponent<PlayerHand>();
+
+        StartGame();
     }
 
     #region Start Game Functions
-    private IEnumerator StartGameRoutine() {
+    private void StartGame() {
         /* // Add Each Player Data to Dictionary
         for (int playerNumber = 0; playerNumber < PhotonNetwork.PlayerList.Length; playerNumber++) {
             playerData.Add(PhotonNetwork.PlayerList[playerNumber].ActorNumber, new PlayerData("Placeholder", 0));
         } */
 
         deckManager.StartDecks();
-        enemyHand.StartGameEnemyHand();
-
-        yield return new WaitForSeconds(0.1f); // Delay to Let DeckManager Spawn // Unnecessary?
+        // enemyHand.StartGameEnemyHand();
 
         // Draw Cards in Order of Player Number
-        StartCoroutine(myPlayer.GetComponent<PlayerHand>().StartingDrawRoutine());
-
-        yield return new WaitForSeconds(0.5f); // Delay to Let All Players Draw their Cards
+        playerHand.StartingDraw();
 
         deckManager.StartTradePile();
 

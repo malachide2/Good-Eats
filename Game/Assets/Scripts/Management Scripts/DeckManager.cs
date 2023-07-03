@@ -20,7 +20,7 @@ public class DeckManager : MonoBehaviour {
 
     private void SpawnTradePileCard(int cardDatabaseIndex, int tradePileIndex) {
         GameObject tradePileCard = tradePile[tradePileIndex];
-        tradePileCard.GetComponent<IngredientCardDisplay>().card = cardDatabase.ingredientCard[cardDatabaseIndex];
+        tradePileCard.GetComponent<IngredientCardInteractibility>().card = cardDatabase.ingredientCard[cardDatabaseIndex];
         tradePileCard.SetActive(true);
     }
 
@@ -61,42 +61,42 @@ public class DeckManager : MonoBehaviour {
     }
 
     private void FillIngredientList() {
-        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(0); } // Buns
-        for (int i = 0; i < 5; i++) { ingredientCardDeck.Add(1); } // Tortilla
-        for (int i = 0; i < 3; i++) { ingredientCardDeck.Add(2); } // Noodles
-        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(3); } // 
-        for (int i = 0; i < 9; i++) { ingredientCardDeck.Add(4); } //
-        for (int i = 0; i < 3; i++) { ingredientCardDeck.Add(5); } //
-        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(6); } //
-        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(7); } //
-        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(8); } //
-        for (int i = 0; i < 3; i++) { ingredientCardDeck.Add(9); } //
-        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(10); } //
-        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(11); } //
-        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(12); } //
-        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(13); } //
-        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(14); } //
-        for (int i = 0; i < 5; i++) { ingredientCardDeck.Add(15); } //
-        for (int i = 0; i < 8; i++) { ingredientCardDeck.Add(16); } //
+        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(0); }  // Buns
+        for (int i = 0; i < 5; i++) { ingredientCardDeck.Add(1); }  // Noodles
+        for (int i = 0; i < 3; i++) { ingredientCardDeck.Add(2); }  // Tortilla
+        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(3); }  // Butter
+        for (int i = 0; i < 9; i++) { ingredientCardDeck.Add(4); }  // Cheese
+        for (int i = 0; i < 3; i++) { ingredientCardDeck.Add(5); }  // Eggs
+        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(6); }  // Bacon
+        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(7); }  // Beef
+        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(8); }  // Chicken
+        for (int i = 0; i < 3; i++) { ingredientCardDeck.Add(9); }  // Fish
+        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(10); } // Sausage
+        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(11); } // Salt
+        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(12); } // Corn
+        for (int i = 0; i < 4; i++) { ingredientCardDeck.Add(13); } // Lettuce
+        for (int i = 0; i < 6; i++) { ingredientCardDeck.Add(14); } // Onions
+        for (int i = 0; i < 5; i++) { ingredientCardDeck.Add(15); } // Potatoes
+        for (int i = 0; i < 8; i++) { ingredientCardDeck.Add(16); } // Tomatoes
     }
     private void FillRecipeList() {
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(0); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(1); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(2); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(3); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(4); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(5); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(6); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(7); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(8); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(9); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(10); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(11); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(12); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(13); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(14); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(15); }
-        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(16); }
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(0); }  // Bacon Egg n' Cheese
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(1); }  // BLT
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(2); }  // Burrito
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(3); }  // Cheeseburger
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(4); }  // Chicken Quesadilla
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(5); }  // Fish and Chips
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(6); }  // Fish Taco
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(7); }  // Grilled Cheese
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(8); }  // Hotdog
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(9); }  // Jambalaya
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(10); } // Omelette
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(11); } // Pizza
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(12); } // Popcorn
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(13); } // Potato Chips
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(14); } // Ramen
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(15); } // Salad
+        for (int i = 0; i < 1; i++) { recipeCardDeck.Add(16); } // Spaghetti
     }
     #endregion
 }

@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using TMPro;
 using UnityEngine;
-// using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class IngredientCardInteractibility : MonoBehaviour {
-    // References
+    public IngredientCard card;
+
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private Image artworkImage;
+
+    [Header("References")]
+    [SerializeField] private GameObject gameManagerGO;
     private CardDatabase cardDatabase;
     private DeckManager deckManager;
 
+    [SerializeField] private GameObject myPlayer;
     private PlayerHand playerHand;
     private PlayerController playerController;
 
@@ -22,15 +28,23 @@ public class IngredientCardInteractibility : MonoBehaviour {
 
     private void Awake() {
         // References
-        cardDatabase = GameObject.FindGameObjectWithTag("DeckManager").GetComponent<CardDatabase>();
-        deckManager = GameObject.FindGameObjectWithTag("DeckManager").GetComponent<DeckManager>();
+        cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
+        deckManager = gameManagerGO.GetComponent<DeckManager>();
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        playerHand = player.GetComponent<PlayerHand>();
-        playerController = player.GetComponent<PlayerController>();
+        playerHand = myPlayer.GetComponent<PlayerHand>();
+        playerController = myPlayer.GetComponent<PlayerController>();
 
-        popupCard = player.transform.GetChild(0).GetChild(2).GetChild(1).gameObject;
-        greyedOutPanel = player.transform.GetChild(0).GetChild(2).GetChild(0).gameObject;
+        popupCard = myPlayer.transform.GetChild(0).GetChild(2).GetChild(1).gameObject;
+        greyedOutPanel = myPlayer.transform.GetChild(0).GetChild(2).GetChild(0).gameObject;
+    }
+
+    private void OnEnable() {
+        RefreshCard();
+    }
+
+    public void RefreshCard() {
+        nameText.text = card.name;
+        artworkImage.sprite = card.artwork;
     }
 
     public void OnCardClicked() {
@@ -48,7 +62,7 @@ public class IngredientCardInteractibility : MonoBehaviour {
         }
         else if (playerController.inDeckPhase) {
 
-            deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(GetComponent<IngredientCardDisplay>().card));
+            deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(GetComponent<IngredientCardInteractibility>().card));
             gameObject.SetActive(false);
 
             playerHand.DrawIngredientCards(1);
@@ -56,7 +70,7 @@ public class IngredientCardInteractibility : MonoBehaviour {
             playerController.NextPhase();
         }
         else {
-            popupCard.GetComponent<IngredientCardDisplay>().card = GetComponent<IngredientCardDisplay>().card;
+            popupCard.GetComponent<IngredientCardInteractibility>().card = GetComponent<IngredientCardInteractibility>().card;
             popupCard.SetActive(true);
             greyedOutPanel.SetActive(true);
         }
@@ -69,12 +83,11 @@ public class IngredientCardInteractibility : MonoBehaviour {
     }
 
     private void ChangeCard(int cardDatabaseIndex) {
-        // networkCard.GetComponent<IngredientCardDisplay>().card = cardDatabase.ingredientCard[cardDatabaseIndex];
-        // networkCard.GetComponent<IngredientCardDisplay>().RefreshCard();
+        card = cardDatabase.ingredientCard[cardDatabaseIndex];
+        RefreshCard();
     }
 
     public void HoverOn() {
-
         transform.position = new Vector2(transform.position.x, 250 * transform.lossyScale.y);
         transform.localScale = new Vector2(1, 1);
     }
