@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using UnityEngine.UI;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerUI : MonoBehaviour {
@@ -16,6 +16,11 @@ public class PlayerUI : MonoBehaviour {
     public GameObject restartButton;
     public GameObject nextActionButton;
     public GameObject turnPhasePanel;
+
+    [Header("Popup Card References")]
+    [SerializeField] private GameObject popupCard;
+    [SerializeField] private GameObject popupRecipeCard;
+    [SerializeField] private GameObject greyedOutPanel;
 
     // public Dropdown resolutionDropdown;
     Resolution[] resolutions;
@@ -68,9 +73,14 @@ public class PlayerUI : MonoBehaviour {
     }
     #endregion
 
+    public void EnterPopup() {
+        popupCard.SetActive(true);
+        greyedOutPanel.SetActive(true);
+    }
 
-    public void Leave() {
-        // GameManager.Instance.LeaveRoom();
+    public void ExitPopup() {
+        popupCard.SetActive(false);
+        greyedOutPanel.SetActive(false);
     }
 
     public void ChooseDeckPhase() {

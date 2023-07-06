@@ -123,7 +123,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5176437899140767716}
         m_TargetAssemblyTypeName: IngredientCardInteractibility, Assembly-CSharp
-        m_MethodName: OnCardClicked
+        m_MethodName: SelectCard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -303,7 +303,7 @@ RectTransform:
   - {fileID: 8452375310766007529}
   - {fileID: 6271195564581214483}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -325,6 +325,9 @@ MonoBehaviour:
   card: {fileID: 0}
   nameText: {fileID: 8452375311641569798}
   artworkImage: {fileID: 8452375311615014111}
+  gameManagerGO: {fileID: 0}
+  myPlayer: {fileID: 0}
+  isTradePileCard: 0
   popupCard: {fileID: 0}
   popupRecipeCard: {fileID: 0}
   greyedOutPanel: {fileID: 0}

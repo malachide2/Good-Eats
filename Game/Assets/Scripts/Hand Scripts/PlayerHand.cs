@@ -32,25 +32,19 @@ public class PlayerHand : MonoBehaviour {
 
     public void StartingDraw() {
         // Draw Cards
-        DrawIngredientCards(6);
+        DrawIngredientCards();
         DrawRecipeCard();
     }
 
     #region Draw Card Functions
-    public void DrawIngredientCards(int amount) {
-        for (int i = 0; i < amount; i++) {
-            // Choose Top Card of Deck & Remove It from Deck
-            IngredientCard cardDrawn = cardDatabase.ingredientCard[deckManager.ingredientCardDeck[0]];
+    public void DrawIngredientCards() {
+        foreach (GameObject blankCard in ingredientCards) {
+            if (blankCard.activeInHierarchy) { continue; }
+            // Set Blank Card Active & Assign Top Card
+            blankCard.SetActive(true);
+            blankCard.GetComponent<IngredientCardInteractibility>().ChangeCard(deckManager.ingredientCardDeck[0]);
+            // Remove Top Card
             deckManager.ingredientCardDeck.RemoveAt(0);
-
-            // Add Card to Hand List & Set the Next Blank Card Active & Assign the Card
-            foreach (GameObject blankCard in ingredientCards) {
-                if (blankCard.activeInHierarchy) { continue; }
-
-                blankCard.GetComponent<IngredientCardInteractibility>().card = cardDrawn;
-                blankCard.SetActive(true);
-                break;
-            }
         }
     }
 
@@ -146,7 +140,7 @@ public class PlayerHand : MonoBehaviour {
             }
 
             deckManager.ShuffleDeck(deckManager.ingredientCardDeck);
-            DrawIngredientCards(correctIngredients.Count);
+            DrawIngredientCards();
         }
     }
 }

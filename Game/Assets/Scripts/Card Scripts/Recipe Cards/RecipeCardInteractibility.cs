@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class RecipeCardInteractibility : MonoBehaviour {
+public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public RecipeCard card;
 
-    public TextMeshProUGUI nameText;
-    public Image artworkImage;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private Image artworkImage;
     [SerializeField] private TextMeshProUGUI[] ingredientTexts;
     public TextMeshProUGUI pointValueText;
 
     [SerializeField] private GameObject popupCard;
     [SerializeField] private GameObject greyedOutPanel;
+
+    private Vector3 originalScale;
+
+    private void Awake() {
+        originalScale = transform.localScale;
+    }
 
     private void OnEnable() {
         RefreshCard();
@@ -34,17 +41,19 @@ public class RecipeCardInteractibility : MonoBehaviour {
         }
     }
 
-    public void HoverOn() {
-        transform.position = new Vector2(transform.position.x, 250*transform.lossyScale.y);
-        transform.localScale = new Vector2(1, 1);
+    // Called when the mouse first hovers over card
+    public void OnPointerEnter(PointerEventData eventData) {
+        transform.position = new Vector2(transform.position.x, 225);
+        transform.localScale = new Vector3(1, 1, 1);
     }
 
-    public void HoverOff() {
+    // Called when the mouse is no longer hovering the card
+    public void OnPointerExit(PointerEventData eventData) {
         transform.position = new Vector2(transform.position.x, 0);
-        transform.localScale = new Vector2(0.75f, 0.75f);
+        transform.localScale = originalScale;
     }
 
-    public void OnCardClicked() {
+    public void SelectCard() {
         popupCard.GetComponent<RecipeCardInteractibility>().card = GetComponent<RecipeCardInteractibility>().card;
         popupCard.SetActive(true);
         greyedOutPanel.SetActive(true);

@@ -18,12 +18,6 @@ public class DeckManager : MonoBehaviour {
         cardDatabase = GetComponent<CardDatabase>();
     }
 
-    private void SpawnTradePileCard(int cardDatabaseIndex, int tradePileIndex) {
-        GameObject tradePileCard = tradePile[tradePileIndex];
-        tradePileCard.GetComponent<IngredientCardInteractibility>().card = cardDatabase.ingredientCard[cardDatabaseIndex];
-        tradePileCard.SetActive(true);
-    }
-
     public void ShuffleDeck(List<byte> Deck) {
         // Fisher-Yates Shuffle
         // Remove a random card then place the new top card in its position, repeated until there are no cards
@@ -47,16 +41,19 @@ public class DeckManager : MonoBehaviour {
         ShuffleDeck(recipeCardDeck);
 
         // Print the Deck in Console
-        for (int i = 0; i < ingredientCardDeck.Count; i++) { Debug.Log(cardDatabase.ingredientCard[ingredientCardDeck[i]].name); }
+        // for (int i = 0; i < ingredientCardDeck.Count; i++) { Debug.Log(cardDatabase.ingredientCard[ingredientCardDeck[i]].name); }
     }
 
     public void StartTradePile() {
         for (int i = 0; i < 4; i++) {
-            // Choose Top Card of Deck & Remove It from Deck & Add It to Trade Pile
-            int cardDrawnIndex = ingredientCardDeck[0];
-            tradePileCards.Add((byte)cardDrawnIndex);
+            // Set Next Trade Card Active
+            GameObject tradePileCard = tradePile[i];
+            tradePileCard.SetActive(true);
+            // Add Top Card to Trade Pile
+            tradePileCard.GetComponent<IngredientCardInteractibility>().ChangeCard(ingredientCardDeck[0]);
+            tradePileCards.Add(ingredientCardDeck[0]);
+            // Remove Top Card
             ingredientCardDeck.RemoveAt(0);
-            SpawnTradePileCard(cardDrawnIndex, i);
         }
     }
 

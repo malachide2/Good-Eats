@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class IngredientCardInteractibility : MonoBehaviour {
+public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public IngredientCard card;
 
     [SerializeField] private TextMeshProUGUI nameText;
@@ -18,12 +19,14 @@ public class IngredientCardInteractibility : MonoBehaviour {
     [SerializeField] private GameObject myPlayer;
     private PlayerHand playerHand;
     private PlayerController playerController;
+    private PlayerUI playerUI;
 
     [Header("Card Popup")]
+    [SerializeField] private bool isTradePileCard;
+    [SerializeField] private bool isPopupCard;
     [SerializeField] private GameObject popupCard;
-    [SerializeField] private GameObject popupRecipeCard;
-    [SerializeField] private GameObject greyedOutPanel;
 
+    private Vector3 originalScale;
     [HideInInspector] public bool lockedIn = false;
 
     private void Awake() {
@@ -33,13 +36,9 @@ public class IngredientCardInteractibility : MonoBehaviour {
 
         playerHand = myPlayer.GetComponent<PlayerHand>();
         playerController = myPlayer.GetComponent<PlayerController>();
+        playerUI = myPlayer.GetComponent<PlayerUI>();
 
-        popupCard = myPlayer.transform.GetChild(0).GetChild(2).GetChild(1).gameObject;
-        greyedOutPanel = myPlayer.transform.GetChild(0).GetChild(2).GetChild(0).gameObject;
-    }
-
-    private void OnEnable() {
-        RefreshCard();
+        originalScale = transform.localScale;
     }
 
     public void RefreshCard() {
@@ -47,7 +46,29 @@ public class IngredientCardInteractibility : MonoBehaviour {
         artworkImage.sprite = card.artwork;
     }
 
-    public void OnCardClicked() {
+    public void ChangeCard(int cardDatabaseIndex) {
+        card = cardDatabase.ingredientCard[cardDatabaseIndex];
+        RefreshCard();
+    }
+
+    // Called when the mouse first hovers over card
+    public void OnPointerEnter(PointerEventData eventData) {
+        if (isTradePileCard || isPopupCard) { return; }
+
+        transform.position = new Vector2(transform.position.x, 225);
+        transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    // Called when the mouse is no longer hovering the card
+    public void OnPointerExit(PointerEventData eventData) {
+        if (isTradePileCard || isPopupCard) { return; }
+        if (lockedIn) { return; }
+
+        transform.position = new Vector2(transform.position.x, 0);
+        transform.localScale = originalScale;
+    }
+
+    public void SelectCard() {
         if (playerController.inTradePhase) {
             if (!playerHand.swapCards.Contains(gameObject)) {
                 playerHand.swapCards.Add(gameObject);
@@ -65,44 +86,25 @@ public class IngredientCardInteractibility : MonoBehaviour {
             deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(GetComponent<IngredientCardInteractibility>().card));
             gameObject.SetActive(false);
 
-            playerHand.DrawIngredientCards(1);
+            playerHand.DrawIngredientCards();
 
             playerController.NextPhase();
         }
         else {
+            playerUI.EnterPopup();
             popupCard.GetComponent<IngredientCardInteractibility>().card = GetComponent<IngredientCardInteractibility>().card;
-            popupCard.SetActive(true);
-            greyedOutPanel.SetActive(true);
+            popupCard.GetComponent<IngredientCardInteractibility>().RefreshCard();
         }
     }
 
     public void DeselectCard() {
-        popupCard.SetActive(false);
-        popupRecipeCard.SetActive(false);
-        greyedOutPanel.SetActive(false);
-    }
-
-    private void ChangeCard(int cardDatabaseIndex) {
-        card = cardDatabase.ingredientCard[cardDatabaseIndex];
-        RefreshCard();
-    }
-
-    public void HoverOn() {
-        transform.position = new Vector2(transform.position.x, 250 * transform.lossyScale.y);
-        transform.localScale = new Vector2(1, 1);
-    }
-
-    public void HoverOff() {
-        if (lockedIn) { return; }
-
-        transform.position = new Vector2(transform.position.x, 0);
-        transform.localScale = new Vector2(0.75f, 0.75f);
+        playerUI.ExitPopup();
     }
 
     public void ResetChosen() {
         lockedIn = false;
 
-        transform.position = new Vector2(transform.position.x, 0);
-        transform.localScale = new Vector2(0.75f, 0.75f);
+        transform.localPosition = new Vector2(transform.position.x, 0);
+        transform.localScale = originalScale;
     }
 }
