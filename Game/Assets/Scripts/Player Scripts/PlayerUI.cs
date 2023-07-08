@@ -18,8 +18,8 @@ public class PlayerUI : MonoBehaviour {
     public GameObject turnPhasePanel;
 
     [Header("Popup Card References")]
-    [SerializeField] private GameObject popupCard;
-    [SerializeField] private GameObject popupRecipeCard;
+    public GameObject popupCard;
+    public GameObject popupRecipeCard;
     [SerializeField] private GameObject greyedOutPanel;
 
     // public Dropdown resolutionDropdown;
@@ -73,13 +73,19 @@ public class PlayerUI : MonoBehaviour {
     }
     #endregion
 
-    public void EnterPopup() {
-        popupCard.SetActive(true);
+    public void EnterPopup(int choice) {
+        if (choice == 0) { // Ingredient Card was clicked
+            popupCard.SetActive(true);
+        }
+        else { // Recipe Card was clicked
+            popupRecipeCard.SetActive(true);
+        }
         greyedOutPanel.SetActive(true);
     }
 
     public void ExitPopup() {
         popupCard.SetActive(false);
+        popupRecipeCard.SetActive(false);
         greyedOutPanel.SetActive(false);
     }
 

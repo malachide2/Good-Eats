@@ -24,7 +24,6 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     [Header("Card Popup")]
     [SerializeField] private bool isTradePileCard;
     [SerializeField] private bool isPopupCard;
-    [SerializeField] private GameObject popupCard;
 
     private Vector3 originalScale;
     [HideInInspector] public bool lockedIn = false;
@@ -91,9 +90,9 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
             playerController.NextPhase();
         }
         else {
-            playerUI.EnterPopup();
-            popupCard.GetComponent<IngredientCardInteractibility>().card = GetComponent<IngredientCardInteractibility>().card;
-            popupCard.GetComponent<IngredientCardInteractibility>().RefreshCard();
+            playerUI.EnterPopup(0);
+            playerUI.popupCard.GetComponent<IngredientCardInteractibility>().card = GetComponent<IngredientCardInteractibility>().card;
+            playerUI.popupCard.GetComponent<IngredientCardInteractibility>().RefreshCard();
         }
     }
 

@@ -49,13 +49,11 @@ public class PlayerHand : MonoBehaviour {
     }
 
     public void DrawRecipeCard() {
-        // Choose Top Card of Deck & Remove It from Deck
-        RecipeCard cardDrawn = cardDatabase.recipeCard[deckManager.recipeCardDeck[0]];
-        deckManager.recipeCardDeck.RemoveAt(0);
-
-        // Set Blank Card Active & Assign the Card
-        recipeCard.GetComponent<RecipeCardInteractibility>().card = cardDrawn;
+        // Set Blank Card Active & Assign Top Card
         recipeCard.SetActive(true);
+        recipeCard.GetComponent<RecipeCardInteractibility>().ChangeCard(deckManager.recipeCardDeck[0]);
+        // Remove Top Card
+        deckManager.recipeCardDeck.RemoveAt(0);
     }
     #endregion
 

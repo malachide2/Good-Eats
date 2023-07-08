@@ -13,17 +13,25 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
     [SerializeField] private TextMeshProUGUI[] ingredientTexts;
     public TextMeshProUGUI pointValueText;
 
-    [SerializeField] private GameObject popupCard;
-    [SerializeField] private GameObject greyedOutPanel;
+    [Header("References")]
+    [SerializeField] private GameObject gameManagerGO;
+    private CardDatabase cardDatabase;
+
+    [SerializeField] private GameObject myPlayer;
+    private PlayerUI playerUI;
+
+    [Header("Card Popup")]
+    [SerializeField] private bool isPopupCard;
 
     private Vector3 originalScale;
 
     private void Awake() {
-        originalScale = transform.localScale;
-    }
+        // References
+        cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
 
-    private void OnEnable() {
-        RefreshCard();
+        playerUI = myPlayer.GetComponent<PlayerUI>();
+
+        originalScale = transform.localScale;
     }
 
     public void RefreshCard() {
@@ -41,21 +49,30 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
         }
     }
 
+    public void ChangeCard(int cardDatabaseIndex) {
+        card = cardDatabase.recipeCard[cardDatabaseIndex];
+        RefreshCard();
+    }
+
     // Called when the mouse first hovers over card
     public void OnPointerEnter(PointerEventData eventData) {
+        if (isPopupCard) { return; }
+
         transform.position = new Vector2(transform.position.x, 225);
         transform.localScale = new Vector3(1, 1, 1);
     }
 
     // Called when the mouse is no longer hovering the card
     public void OnPointerExit(PointerEventData eventData) {
+        if (isPopupCard) { return; }
+
         transform.position = new Vector2(transform.position.x, 0);
         transform.localScale = originalScale;
     }
 
     public void SelectCard() {
-        popupCard.GetComponent<RecipeCardInteractibility>().card = GetComponent<RecipeCardInteractibility>().card;
-        popupCard.SetActive(true);
-        greyedOutPanel.SetActive(true);
+        playerUI.EnterPopup(1);
+        playerUI.popupRecipeCard.GetComponent<RecipeCardInteractibility>().card = GetComponent<RecipeCardInteractibility>().card;
+        playerUI.popupRecipeCard.GetComponent<RecipeCardInteractibility>().RefreshCard();
     }
 }

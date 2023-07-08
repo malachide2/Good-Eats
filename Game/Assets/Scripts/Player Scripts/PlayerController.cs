@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-// using UnityEngine.UI;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     private PlayerUI playerUI;
     private PlayerHand playerHand;
 
-    // public Slider pointSlider;
+    public Slider pointSlider;
 
     [HideInInspector] public bool isTurn;
     [HideInInspector] public int phase;
