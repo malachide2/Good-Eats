@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerHand : MonoBehaviour {
@@ -10,7 +9,6 @@ public class PlayerHand : MonoBehaviour {
     [SerializeField] private GameObject gameManagerGO;
     private GameManager gameManager;
     private DeckManager deckManager;
-    private CardDatabase cardDatabase;
 
     private PlayerController playerController;
     private PlayerUI playerUI;
@@ -26,7 +24,6 @@ public class PlayerHand : MonoBehaviour {
         // References
         gameManager = gameManagerGO.GetComponent<GameManager>();
         deckManager = gameManagerGO.GetComponent<DeckManager>();
-        cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
 
         playerController = GetComponent<PlayerController>();
         playerUI = GetComponent<PlayerUI>();
@@ -114,6 +111,7 @@ public class PlayerHand : MonoBehaviour {
 
         if (correctIngredients.Count == ingredientsInRecipe.Count) { // If recipe is completed
             // Add points
+            playerController.points += recipeCard.GetComponent<RecipeCardInteractibility>().card.pointValue;
             playerUI.pointSlider.value += recipeCard.GetComponent<RecipeCardInteractibility>().card.pointValue;
             if (playerUI.pointSlider.value >= 100) {
                 playerUI.pointSlider.value = 100;
@@ -121,18 +119,20 @@ public class PlayerHand : MonoBehaviour {
             }
 
             // Get a new recipe
-            deckManager.recipeCardDeck.Add(cardDatabase.FindRecipeCard(recipeCard.GetComponent<RecipeCardInteractibility>().card));
+            deckManager.recipeCardDeck.Add(recipeCard.GetComponent<RecipeCardInteractibility>().card);
             recipeCard.SetActive(false);
             DrawRecipeCard();
 
             // Shuffle old ingredients into deck
             foreach (GameObject correctIngredient in correctIngredients) {
-                deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(correctIngredient.GetComponent<IngredientCardInteractibility>().card));
+                deckManager.ingredientCardDeck.Add(correctIngredient.GetComponent<IngredientCardInteractibility>().card);
                 correctIngredient.SetActive(false);
             }
             // Draw new ingredients
-            deckManager.ShuffleDeck(deckManager.ingredientCardDeck);
+            deckManager.ShuffleIngredientDeck();
             DrawIngredientCards();
         }
+
+        playerController.EndTurn();
     }
 }

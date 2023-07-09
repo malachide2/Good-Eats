@@ -45,8 +45,8 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
         artworkImage.sprite = card.artwork;
     }
 
-    public void ChangeCard(int cardDatabaseIndex) {
-        card = cardDatabase.ingredientCard[cardDatabaseIndex];
+    public void ChangeCard(IngredientCard replacementCard) {
+        card = replacementCard;
         RefreshCard();
     }
 

@@ -49,8 +49,8 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
         }
     }
 
-    public void ChangeCard(int cardDatabaseIndex) {
-        card = cardDatabase.recipeCard[cardDatabaseIndex];
+    public void ChangeCard(RecipeCard replacementCard) {
+        card = replacementCard;
         RefreshCard();
     }
 

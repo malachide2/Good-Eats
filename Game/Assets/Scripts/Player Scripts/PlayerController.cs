@@ -41,9 +41,8 @@ public class PlayerController : MonoBehaviour {
         playerHand.CheckRecipeCompletion();
     }
 
-    private void EndTurn() {
+    public void EndTurn() {
         isTurn = false;
         gameManager.StartNextTurn(1); // 1 is first AI since Player is player[0]
-        playerUI.turnPhasePanel.SetActive(false);
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-// using UnityEngine.UI; // can import after sucessful build
 
 public class GameManager : MonoBehaviour {
     // References
@@ -12,10 +11,10 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private GameObject myPlayer;
     private PlayerController playerController;
-    private PlayerHand playerHand; 
-    // [SerializeField] private EnemyHand enemyHand;
+    private PlayerHand playerHand;
 
-    public int numberOfPlayers = 2;
+    public int numberOfPlayers = 4;
+    public GameObject[] enemies;
 
     // Create Dictionary of All Player Data
     public Dictionary<int, PlayerData> playerData = new Dictionary<int, PlayerData>();
@@ -33,7 +32,9 @@ public class GameManager : MonoBehaviour {
 
         playerController = myPlayer.GetComponent<PlayerController>();
         playerHand = myPlayer.GetComponent<PlayerHand>();
+    }
 
+    private void Start() {
         StartGame();
     }
 
@@ -45,10 +46,12 @@ public class GameManager : MonoBehaviour {
         } */
 
         deckManager.StartDecks();
-        // enemyHand.StartGameEnemyHand();
 
         // Draw Cards in Order of Player Number
         playerHand.StartingDraw();
+        foreach (GameObject enemy in enemies) {
+            enemy.GetComponent<EnemyHand>().StartingDraw();
+        }
 
         deckManager.StartTradePile();
 
@@ -60,14 +63,16 @@ public class GameManager : MonoBehaviour {
     public void StartNextTurn(int currentPlayerNumber) {
         int nextPlayerNumber = (currentPlayerNumber % numberOfPlayers) + 1;
         playerController.TakeTurn();
+
+        if (currentPlayerNumber == 1) {
+            enemies[0].GetComponent<EnemyHand>().CheckRecipeCompletion();
+            enemies[1].GetComponent<EnemyHand>().CheckRecipeCompletion();
+            enemies[2].GetComponent<EnemyHand>().CheckRecipeCompletion();
+        }
     }
 
     public void EndGame() {
         myPlayer.GetComponent<PlayerUI>().gameOverScreen.SetActive(true);
         myPlayer.GetComponent<PlayerUI>().restartButton.SetActive(true);
-    }
-
-    public void UpdateSliderForOthers(int playerNumber, float value) { // This goes in AI controller
-        // enemyHand.enemyHands[playerNumber].transform.GetChild(1).gameObject.GetComponent<Slider>().value = value;
     }
 }
