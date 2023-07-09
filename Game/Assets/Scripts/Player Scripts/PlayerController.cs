@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour {
     private PlayerUI playerUI;
     private PlayerHand playerHand;
 
-    public Slider pointSlider;
-
     [HideInInspector] public bool isTurn;
     [HideInInspector] public int phase;
     [HideInInspector] public bool inDeckPhase;
@@ -32,38 +30,20 @@ public class PlayerController : MonoBehaviour {
         playerHand = GetComponent<PlayerHand>();
     }
 
-    public void StartTurn() {
+    public void TakeTurn() {
         isTurn = true;
-        phase = 0;
-        NextPhase();
-        playerUI.StartTurnUI();
+        // playerUI.StartTurnUI();
+        inTradePhase = true;
     }
 
-    public void NextPhase() {
-        if (phase == 0) {
-            // Start Trade/Deck Phase
-        }
-        else if (phase == 1) {
-            playerUI.UndoButton.SetActive(false);
-            StartRecipePhase();
-        }
-        else if (phase == 2) {
-            EndTurn();
-        }
-
-        phase++;
+    public void RecipePhase() {
+        inTradePhase = false;
+        playerHand.CheckRecipeCompletion();
     }
 
     private void EndTurn() {
         isTurn = false;
         gameManager.StartNextTurn(1); // 1 is first AI since Player is player[0]
         playerUI.turnPhasePanel.SetActive(false);
-    }
-
-    private void StartRecipePhase() {
-        inDeckPhase = false;
-        inTradePhase = false;
-
-        playerHand.CheckRecipeCompletion();
     }
 }

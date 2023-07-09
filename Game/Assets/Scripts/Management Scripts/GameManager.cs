@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
 
     public void StartNextTurn(int currentPlayerNumber) {
         int nextPlayerNumber = (currentPlayerNumber % numberOfPlayers) + 1;
-        // playerController.StartTurn();
+        playerController.TakeTurn();
     }
 
     public void EndGame() {

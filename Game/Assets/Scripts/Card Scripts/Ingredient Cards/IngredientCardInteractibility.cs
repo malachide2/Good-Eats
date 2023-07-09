@@ -22,7 +22,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     private PlayerUI playerUI;
 
     [Header("Card Popup")]
-    [SerializeField] private bool isTradePileCard;
+    public bool isTradePileCard;
     [SerializeField] private bool isPopupCard;
 
     private Vector3 originalScale;
@@ -69,25 +69,29 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
 
     public void SelectCard() {
         if (playerController.inTradePhase) {
-            if (!playerHand.swapCards.Contains(gameObject)) {
-                playerHand.swapCards.Add(gameObject);
-                lockedIn = true;
+            if(isTradePileCard && playerHand.swapCards.Count == 0) { return; } // Can't Select Trade Pile card first
 
-                playerHand.SwapCards();
+            if (!playerHand.swapCards.Contains(gameObject)) { // If this card isn't already selected
+                // If two non-trade pile cards are chosen
+                if (!isTradePileCard && !(playerHand.swapCards.Count == 0)) {
+                    // Reset both of them
+                    playerHand.swapCards[0].GetComponent<IngredientCardInteractibility>().ResetChosen();
+                    ResetChosen();
+                    playerHand.swapCards.Clear();
+                }
+                else {
+                    // Select it
+                    playerHand.swapCards.Add(gameObject);
+                    lockedIn = true;
+
+                    playerHand.SwapCards();
+                }
             }
             else {
+                // Unselect it
                 playerHand.swapCards.Remove(gameObject);
-                lockedIn = false;
+                ResetChosen();
             }
-        }
-        else if (playerController.inDeckPhase) {
-
-            deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(GetComponent<IngredientCardInteractibility>().card));
-            gameObject.SetActive(false);
-
-            playerHand.DrawIngredientCards();
-
-            playerController.NextPhase();
         }
         else {
             playerUI.EnterPopup(0);
@@ -101,9 +105,9 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     }
 
     public void ResetChosen() {
-        lockedIn = false;
-
-        transform.localPosition = new Vector2(transform.position.x, 0);
+        transform.position = new Vector2(transform.position.x, 0);
         transform.localScale = originalScale;
+
+        lockedIn = false;
     }
 }

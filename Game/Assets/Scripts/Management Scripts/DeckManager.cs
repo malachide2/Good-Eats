@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 public class DeckManager : MonoBehaviour {
     // References
     private CardDatabase cardDatabase;
+
+    [SerializeField] private GameObject myPlayer;
+    private PlayerController playerController;
+    private PlayerHand playerHand;
+
     [SerializeField] private GameObject[] tradePile;
 
     [Header("Decks")]
@@ -16,6 +21,9 @@ public class DeckManager : MonoBehaviour {
     private void Awake() {
         // References
         cardDatabase = GetComponent<CardDatabase>();
+
+        playerController = myPlayer.GetComponent<PlayerController>();
+        playerHand = myPlayer.GetComponent<PlayerHand>();
     }
 
     public void ShuffleDeck(List<byte> Deck) {
@@ -96,4 +104,20 @@ public class DeckManager : MonoBehaviour {
         for (int i = 0; i < 1; i++) { recipeCardDeck.Add(16); } // Spaghetti
     }
     #endregion
+
+    public void SwapWithDeck() {
+        if (!(playerHand.swapCards.Count == 1)) { return; }
+        // Shuffle Card into Deck & Cleanup
+        GameObject oldCard = playerHand.swapCards[0];
+        ingredientCardDeck.Add(cardDatabase.FindIngredientCard(oldCard.GetComponent<IngredientCardInteractibility>().card));
+        ShuffleDeck(ingredientCardDeck);
+
+        oldCard.GetComponent<IngredientCardInteractibility>().ResetChosen();
+        oldCard.SetActive(false);
+        playerHand.swapCards.Clear();
+        // Draw new card
+        playerHand.DrawIngredientCards();
+
+        playerController.RecipePhase();
+    }
 }

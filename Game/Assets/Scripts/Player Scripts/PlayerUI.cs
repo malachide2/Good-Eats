@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerUI : MonoBehaviour {
+    // References
+    [SerializeField] private GameManager gameManager;
+
+    private PlayerController playerController;
+    private PlayerHand playerHand;
+
     [Header("Button References")]
     [SerializeField] private GameObject settingsButton;
     [SerializeField] private GameObject optionsMenu;
@@ -16,20 +22,15 @@ public class PlayerUI : MonoBehaviour {
     public GameObject restartButton;
     public GameObject nextActionButton;
     public GameObject turnPhasePanel;
+    public Slider pointSlider;
 
     [Header("Popup Card References")]
     public GameObject popupCard;
     public GameObject popupRecipeCard;
-    [SerializeField] private GameObject greyedOutPanel;
+    [SerializeField] private GameObject backgroundBlur;
 
     // public Dropdown resolutionDropdown;
     Resolution[] resolutions;
-
-    // References
-    [SerializeField] private GameManager gameManager;
-
-    private PlayerController playerController;
-    private PlayerHand playerHand;
 
     private void Awake() {
         // References
@@ -80,13 +81,13 @@ public class PlayerUI : MonoBehaviour {
         else { // Recipe Card was clicked
             popupRecipeCard.SetActive(true);
         }
-        greyedOutPanel.SetActive(true);
+        backgroundBlur.SetActive(true);
     }
 
     public void ExitPopup() {
         popupCard.SetActive(false);
         popupRecipeCard.SetActive(false);
-        greyedOutPanel.SetActive(false);
+        backgroundBlur.SetActive(false);
     }
 
     public void ChooseDeckPhase() {

@@ -13,6 +13,7 @@ public class PlayerHand : MonoBehaviour {
     private CardDatabase cardDatabase;
 
     private PlayerController playerController;
+    private PlayerUI playerUI;
 
     [Header("Blank Cards")]
     [SerializeField] private GameObject[] ingredientCards;
@@ -28,6 +29,7 @@ public class PlayerHand : MonoBehaviour {
         cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
 
         playerController = GetComponent<PlayerController>();
+        playerUI = GetComponent<PlayerUI>();
     }
 
     public void StartingDraw() {
@@ -60,52 +62,41 @@ public class PlayerHand : MonoBehaviour {
     public void SwapCards() {
         if (!(swapCards.Count == 2)) { return; }
 
-        if (gameManager.numberOfPlayers == 2) { // If one card is in trade pile, other is in hand // doesn't do anything
+        IngredientCardInteractibility card1 = swapCards[0].GetComponent<IngredientCardInteractibility>();
+        IngredientCardInteractibility card2 = swapCards[1].GetComponent<IngredientCardInteractibility>();
+        IngredientCard originalCard1 = card1.card;
 
-            IngredientCardInteractibility cardDisplay1 = swapCards[0].GetComponent<IngredientCardInteractibility>();
-            IngredientCardInteractibility cardDisplay2 = swapCards[1].GetComponent<IngredientCardInteractibility>();
+        card1.card = card2.card;
+        card2.card = originalCard1;
+        card1.RefreshCard();
+        card2.RefreshCard();
 
-            IngredientCard card1 = cardDisplay1.card;
-
-            cardDisplay1.card = cardDisplay2.card;
-            cardDisplay2.card = card1;
-
-            cardDisplay1.RefreshCard();
-            cardDisplay2.RefreshCard();
-
-            if (gameManager.numberOfPlayers == 2) { // if card 1 is the one in the trade pile, swap it, otherwise swap card 2 // doesn't do anything
-                // Change Card 1
-                swapCards[1].GetComponent<IngredientCardInteractibility>().ResetChosen();
-            }
-            else {
-                // Change Card 2
-                swapCards[0].GetComponent<IngredientCardInteractibility>().ResetChosen();
-            }
-
-            swapCards.Clear();
-
-            playerController.NextPhase();
+        // If card 2 is the one in the trade pile, reset card 1
+        // Otherwise, reset card 2
+        if (card2.isTradePileCard) { 
+            card1.ResetChosen();
         }
         else {
-   
-            swapCards[0].GetComponent<IngredientCardInteractibility>().ResetChosen();
-            swapCards[1].GetComponent<IngredientCardInteractibility>().ResetChosen();
-
-            swapCards.Clear();
+            card2.ResetChosen();
         }
+
+        swapCards.Clear();
+
+        playerController.RecipePhase();
     }
 
     public void CheckRecipeCompletion() {
         List<GameObject> correctIngredients = new List<GameObject>();
         List<IngredientCard> ingredientsInRecipe = new List<IngredientCard>(recipeCard.GetComponent<RecipeCardInteractibility>().card.ingredientList);
         
-
+        // Compares each ingredient in hand to ingredients needed by recipe
         for (int i = 0; i < ingredientCards.Length; i++) {
             bool bigContinue = false;
             if (!ingredientCards[i].activeInHierarchy) { continue; } // Skip the Card
 
             IngredientCard thisCard = ingredientCards[i].GetComponent<IngredientCardInteractibility>().card;
 
+            // Checks to see if this ingredient was already counted (If you have two of the same ingredient)
             foreach (GameObject correctIngredientCard in correctIngredients) {
                 if (thisCard == correctIngredientCard.GetComponent<IngredientCardInteractibility>().card) {
                     bigContinue = true; // Skip the Card
@@ -115,28 +106,31 @@ public class PlayerHand : MonoBehaviour {
 
             if (bigContinue) { continue; }
 
+            // If this ingedient is in the recipe, mark it as correct
             if (ingredientsInRecipe.Contains(thisCard)) {
                 correctIngredients.Add(ingredientCards[i]);
             }
         }
 
-        if (correctIngredients.Count == ingredientsInRecipe.Count) {
-            // Recipe is completed
-            /* playerController.pointSlider.value += recipeCard.GetComponent<RecipeCardDisplay>().card.pointValue;
-            if (playerController.pointSlider.value >= 100) {
-                playerController.pointSlider.value = 100;
+        if (correctIngredients.Count == ingredientsInRecipe.Count) { // If recipe is completed
+            // Add points
+            playerUI.pointSlider.value += recipeCard.GetComponent<RecipeCardInteractibility>().card.pointValue;
+            if (playerUI.pointSlider.value >= 100) {
+                playerUI.pointSlider.value = 100;
                 gameManager.EndGame();
-            } */
+            }
 
+            // Get a new recipe
             deckManager.recipeCardDeck.Add(cardDatabase.FindRecipeCard(recipeCard.GetComponent<RecipeCardInteractibility>().card));
             recipeCard.SetActive(false);
             DrawRecipeCard();
 
+            // Shuffle old ingredients into deck
             foreach (GameObject correctIngredient in correctIngredients) {
                 deckManager.ingredientCardDeck.Add(cardDatabase.FindIngredientCard(correctIngredient.GetComponent<IngredientCardInteractibility>().card));
                 correctIngredient.SetActive(false);
             }
-
+            // Draw new ingredients
             deckManager.ShuffleDeck(deckManager.ingredientCardDeck);
             DrawIngredientCards();
         }
