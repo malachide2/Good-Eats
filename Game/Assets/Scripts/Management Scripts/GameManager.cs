@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
 
     public int numberOfPlayers = 4;
     public GameObject[] enemies;
+    private int playerNumber = -1;
 
     // Create Dictionary of All Player Data
     public Dictionary<int, PlayerData> playerData = new Dictionary<int, PlayerData>();
@@ -55,19 +56,19 @@ public class GameManager : MonoBehaviour {
 
         deckManager.StartTradePile();
 
-        StartNextTurn(0);
+        StartNextTurn();
         
     }
     #endregion
 
-    public void StartNextTurn(int currentPlayerNumber) {
-        int nextPlayerNumber = (currentPlayerNumber % numberOfPlayers) + 1;
-        playerController.TakeTurn();
-
-        if (currentPlayerNumber == 1) {
-            enemies[0].GetComponent<EnemyHand>().CheckRecipeCompletion();
-            enemies[1].GetComponent<EnemyHand>().CheckRecipeCompletion();
-            enemies[2].GetComponent<EnemyHand>().CheckRecipeCompletion();
+    public void StartNextTurn() {
+        playerNumber = (playerNumber + 1) % numberOfPlayers;
+        
+        if (playerNumber == 0) {
+            playerController.TakeTurn();
+        }
+        else {
+            StartCoroutine(enemies[playerNumber - 1].GetComponent<EnemyController>().TakeTurnRoutine()); // - 1 because 0 is first index
         }
     }
 

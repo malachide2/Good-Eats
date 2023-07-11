@@ -11,7 +11,7 @@ public class DeckManager : MonoBehaviour {
     private PlayerController playerController;
     private PlayerHand playerHand;
 
-    [SerializeField] private GameObject[] tradePile;
+    public GameObject[] tradePile;
 
     [Header("Decks")]
     public List<IngredientCard> ingredientCardDeck = new List<IngredientCard>();

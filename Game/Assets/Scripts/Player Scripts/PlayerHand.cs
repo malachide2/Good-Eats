@@ -93,7 +93,7 @@ public class PlayerHand : MonoBehaviour {
 
             IngredientCard thisCard = ingredientCards[i].GetComponent<IngredientCardInteractibility>().card;
 
-            // Checks to see if this ingredient was already counted (If you have two of the same ingredient)
+            // Checks to see if this ingredient was already counted (If you have multiple of the same ingredient)
             foreach (GameObject correctIngredientCard in correctIngredients) {
                 if (thisCard == correctIngredientCard.GetComponent<IngredientCardInteractibility>().card) {
                     bigContinue = true; // Skip the Card

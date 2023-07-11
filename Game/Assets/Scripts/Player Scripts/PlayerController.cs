@@ -43,6 +43,6 @@ public class PlayerController : MonoBehaviour {
 
     public void EndTurn() {
         isTurn = false;
-        gameManager.StartNextTurn(1); // 1 is first AI since Player is player[0]
+        gameManager.StartNextTurn();
     }
 }

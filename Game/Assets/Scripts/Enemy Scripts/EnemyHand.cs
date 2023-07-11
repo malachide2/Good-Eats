@@ -51,7 +51,7 @@ public class EnemyHand : MonoBehaviour {
         for (int i = 0; i < ingredientCards.Count; i++) {
             bool bigContinue = false;
 
-            // Checks to see if this ingredient was already counted (If you have two of the same ingredient)
+            // Checks to see if this ingredient was already counted (If you have multiple of the same ingredient)
             foreach (IngredientCard correctIngredientCard in correctIngredients) {
                 if (ingredientCards[i] == correctIngredientCard) {
                     bigContinue = true; // Skip the Card
@@ -89,7 +89,5 @@ public class EnemyHand : MonoBehaviour {
             deckManager.ShuffleIngredientDeck();
             DrawIngredientCards(correctIngredients.Count);
         }
-
-        // playerController.EndTurn();
     }
 }

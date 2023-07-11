@@ -161,6 +161,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 525443573}
     m_Modifications:
+    - target: {fileID: 85236256885530901, guid: 8893a6023da72614aa64df5ce7c2fee2, type: 3}
+      propertyPath: gameManagerGO
+      value: 
+      objectReference: {fileID: 368047842}
     - target: {fileID: 1439100277665620908, guid: 8893a6023da72614aa64df5ce7c2fee2, type: 3}
       propertyPath: gameManagerGO
       value: 
@@ -2638,6 +2642,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 525443573}
     m_Modifications:
+    - target: {fileID: 85236256885530901, guid: 8893a6023da72614aa64df5ce7c2fee2, type: 3}
+      propertyPath: gameManagerGO
+      value: 
+      objectReference: {fileID: 368047842}
     - target: {fileID: 1439100277665620908, guid: 8893a6023da72614aa64df5ce7c2fee2, type: 3}
       propertyPath: gameManagerGO
       value: 
@@ -4740,6 +4748,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 525443573}
     m_Modifications:
+    - target: {fileID: 85236256885530901, guid: 8893a6023da72614aa64df5ce7c2fee2, type: 3}
+      propertyPath: gameManagerGO
+      value: 
+      objectReference: {fileID: 368047842}
     - target: {fileID: 1439100277665620908, guid: 8893a6023da72614aa64df5ce7c2fee2, type: 3}
       propertyPath: gameManagerGO
       value: 
