@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DeckManager : MonoBehaviour {
     // References
@@ -56,7 +55,7 @@ public class DeckManager : MonoBehaviour {
         ShuffleRecipeDeck();
 
         // Print the Deck in Console
-        for (int i = 0; i < ingredientCardDeck.Count; i++) { Debug.Log(ingredientCardDeck[i].name); }
+        // for (int i = 0; i < ingredientCardDeck.Count; i++) { Debug.Log(ingredientCardDeck[i].name); }
     }
 
     public void StartTradePile() {

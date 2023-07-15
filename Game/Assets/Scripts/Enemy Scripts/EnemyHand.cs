@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 public class EnemyHand : MonoBehaviour {
     // References
     [SerializeField] private GameObject gameManagerGO;
@@ -14,6 +12,10 @@ public class EnemyHand : MonoBehaviour {
 
     public List<IngredientCard> ingredientCards = new List<IngredientCard>();
     public RecipeCard recipeCard;
+
+    public List<IngredientCard> ingredientsNeeded;
+    public List<IngredientCard> correctIngredients = new List<IngredientCard>();
+    public List<IngredientCard> incorrectIngredients = new List<IngredientCard>();
 
     private void Awake() {
         // References
@@ -44,30 +46,7 @@ public class EnemyHand : MonoBehaviour {
     }
 
     public void CheckRecipeCompletion() {
-        List<IngredientCard> correctIngredients = new List<IngredientCard>();
-        List<IngredientCard> ingredientsInRecipe = new List<IngredientCard>(recipeCard.ingredientList);
-
-        // Compares each ingredient in hand to ingredients needed by recipe
-        for (int i = 0; i < ingredientCards.Count; i++) {
-            bool bigContinue = false;
-
-            // Checks to see if this ingredient was already counted (If you have multiple of the same ingredient)
-            foreach (IngredientCard correctIngredientCard in correctIngredients) {
-                if (ingredientCards[i] == correctIngredientCard) {
-                    bigContinue = true; // Skip the Card
-                    break;
-                }
-            }
-
-            if (bigContinue) { continue; }
-
-            // If this ingedient is in the recipe, mark it as correct
-            if (ingredientsInRecipe.Contains(ingredientCards[i])) {
-                correctIngredients.Add(ingredientCards[i]);
-            }
-        }
-
-        if (correctIngredients.Count == ingredientsInRecipe.Count) { // If recipe is completed
+        if (correctIngredients.Count == recipeCard.ingredientList.Length) { // If recipe is completed
             // Add points
             enemyController.points += recipeCard.pointValue;
             /* playerUI.pointSlider.value += recipeCard.GetComponent<RecipeCardInteractibility>().card.pointValue;
@@ -88,6 +67,22 @@ public class EnemyHand : MonoBehaviour {
             // Draw new ingredients
             deckManager.ShuffleIngredientDeck();
             DrawIngredientCards(correctIngredients.Count);
+        }
+    }
+
+    public void DetermineCardsNeeded() {
+        ingredientsNeeded = new List<IngredientCard>(recipeCard.ingredientList);
+
+        // Compares each ingredient in hand to ingredients needed by recipe
+        foreach (IngredientCard currentCard in ingredientCards) {
+            // If this ingedient is in the recipe, mark it as correct & remove the need for it
+            if (ingredientsNeeded.Contains(currentCard)) {
+                correctIngredients.Add(currentCard);
+                ingredientsNeeded.Remove(currentCard);
+            }
+            else {
+                incorrectIngredients.Add(currentCard);
+            }
         }
     }
 }

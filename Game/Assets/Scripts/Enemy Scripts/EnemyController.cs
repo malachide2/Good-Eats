@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class EnemyController : MonoBehaviour {
     // References
@@ -22,60 +22,58 @@ public class EnemyController : MonoBehaviour {
     }
 
     public IEnumerator TakeTurnRoutine() {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         
-        MakeBestMove();
-        enemyHand.CheckRecipeCompletion();
+        enemyHand.DetermineCardsNeeded();
 
+        // Ensures AI doesn't always make the best move
+        int skillMove = Random.Range(0, 2);
+        if (skillMove == 0) {
+            MakeBestMove();
+        }
+        else {
+            // Chooses a random trade pile card to swap with
+            skillMove = Random.Range(0, 4);
+            SwapWithTradePile(deckManager.tradePile[skillMove]);
+        }
+
+        enemyHand.CheckRecipeCompletion();
+        enemyHand.incorrectIngredients.Clear();
+        enemyHand.correctIngredients.Clear();
         gameManager.StartNextTurn();
     }
 
     private void MakeBestMove() {
-        // Optimize Choosing the correct card
-        // Check the 4 Trade Pile Cards
-
-
-        List<IngredientCard> ingredientsNeeded = new List<IngredientCard>(enemyHand.recipeCard.ingredientList);
-        List<IngredientCard> correctIngredients = new List<IngredientCard>();
-        List<IngredientCard> incorrectIngredients = new List<IngredientCard>();
-
-        // Compares each ingredient in hand to ingredients needed by recipe
-        foreach (IngredientCard currentCard in enemyHand.ingredientCards) {
-            // If this ingedient is in the recipe, mark it as correct & remove the need for it
-            if (ingredientsNeeded.Contains(currentCard)) {
-                correctIngredients.Add(currentCard);
-                ingredientsNeeded.Remove(currentCard);
-            }
-            else {
-                incorrectIngredients.Add(currentCard);
-            }
-        }
-
         bool swapHasBeenDone = false;
 
         // Compares each card in trade pile to ingredients needed by recipe
         foreach (GameObject item in deckManager.tradePile) {
             IngredientCard tradePileCard = item.GetComponent<IngredientCardInteractibility>().card;
-            
-            if (ingredientsNeeded.Contains(tradePileCard)) {
-                Debug.Log("Swap");
+            // If this card is needed, swap the card in hand for this card
+            if (enemyHand.ingredientsNeeded.Contains(tradePileCard)) {
+                SwapWithTradePile(item);
 
-                enemyHand.ingredientCards[enemyHand.ingredientCards.IndexOf(incorrectIngredients[0])] = tradePileCard;
-                item.GetComponent<IngredientCardInteractibility>().ChangeCard(incorrectIngredients[0]);
-                
                 swapHasBeenDone = true;
                 break;
             }
         }
 
         if (!swapHasBeenDone) {
-            // Deck
-            Debug.Log("Deck");
-
-            enemyHand.ingredientCards.Remove(incorrectIngredients[0]);
-            deckManager.ingredientCardDeck.Add(incorrectIngredients[0]);
-            deckManager.ShuffleIngredientDeck();
-            enemyHand.DrawIngredientCards(1);
+            SwapWithDeck();
         }
+    }
+
+    private void SwapWithTradePile(GameObject cardToSwap) {
+        IngredientCard card = cardToSwap.GetComponent<IngredientCardInteractibility>().card;
+        enemyHand.ingredientCards[enemyHand.ingredientCards.IndexOf(enemyHand.incorrectIngredients[0])] = card;
+        cardToSwap.GetComponent<IngredientCardInteractibility>().ChangeCard(enemyHand.incorrectIngredients[0]);
+    }
+
+    private void SwapWithDeck() {
+        // Take any of the incorrect ingredients & Put it in deck & Draw new card
+        enemyHand.ingredientCards.Remove(enemyHand.incorrectIngredients[0]);
+        deckManager.ingredientCardDeck.Add(enemyHand.incorrectIngredients[0]);
+        deckManager.ShuffleIngredientDeck();
+        enemyHand.DrawIngredientCards(1);
     }
 }

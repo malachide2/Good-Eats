@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,9 +15,6 @@ public class GameManager : MonoBehaviour {
     public int numberOfPlayers = 4;
     public GameObject[] enemies;
     private int playerNumber = -1;
-
-    // Create Dictionary of All Player Data
-    public Dictionary<int, PlayerData> playerData = new Dictionary<int, PlayerData>();
 
     private void Awake() {
         // If we started in the main game scene, load the menu scene
