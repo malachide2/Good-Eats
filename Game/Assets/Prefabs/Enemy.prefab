@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManagerGO: {fileID: 0}
+  pointSlider: {fileID: 2834568396362811109}
   points: 0
 --- !u!114 &1439100277665620908
 MonoBehaviour:
@@ -229,6 +230,9 @@ MonoBehaviour:
   gameManagerGO: {fileID: 0}
   ingredientCards: []
   recipeCard: {fileID: 0}
+  ingredientsNeeded: []
+  correctIngredients: []
+  incorrectIngredients: []
 --- !u!1 &3241075784803411528
 GameObject:
   m_ObjectHideFlags: 0

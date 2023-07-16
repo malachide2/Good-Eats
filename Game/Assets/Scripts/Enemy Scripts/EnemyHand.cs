@@ -46,14 +46,15 @@ public class EnemyHand : MonoBehaviour {
     }
 
     public void CheckRecipeCompletion() {
+        DetermineCardsNeeded();
         if (correctIngredients.Count == recipeCard.ingredientList.Length) { // If recipe is completed
             // Add points
             enemyController.points += recipeCard.pointValue;
-            /* playerUI.pointSlider.value += recipeCard.GetComponent<RecipeCardInteractibility>().card.pointValue;
-            if (playerUI.pointSlider.value >= 100) {
-                playerUI.pointSlider.value = 100;
+            enemyController.pointSlider.value += recipeCard.pointValue;
+            if (enemyController.pointSlider.value >= 100) {
+                enemyController.pointSlider.value = 100;
                 gameManager.EndGame();
-            } */
+            }
 
             // Get a new recipe
             deckManager.recipeCardDeck.Add(recipeCard);
@@ -72,6 +73,8 @@ public class EnemyHand : MonoBehaviour {
 
     public void DetermineCardsNeeded() {
         ingredientsNeeded = new List<IngredientCard>(recipeCard.ingredientList);
+        correctIngredients.Clear();
+        incorrectIngredients.Clear();
 
         // Compares each ingredient in hand to ingredients needed by recipe
         foreach (IngredientCard currentCard in ingredientCards) {

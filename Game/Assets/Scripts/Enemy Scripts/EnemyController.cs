@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.Progress;
 
 public class EnemyController : MonoBehaviour {
@@ -11,6 +12,7 @@ public class EnemyController : MonoBehaviour {
 
     private EnemyHand enemyHand;
 
+    public Slider pointSlider;
     public int points = 0;
 
     private void Awake() {
@@ -38,8 +40,6 @@ public class EnemyController : MonoBehaviour {
         }
 
         enemyHand.CheckRecipeCompletion();
-        enemyHand.incorrectIngredients.Clear();
-        enemyHand.correctIngredients.Clear();
         gameManager.StartNextTurn();
     }
 

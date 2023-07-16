@@ -8,34 +8,28 @@ public class PlayerUI : MonoBehaviour {
     // References
     [SerializeField] private GameManager gameManager;
 
-    private PlayerController playerController;
-    private PlayerHand playerHand;
-
-    [Header("Button References")]
-    [SerializeField] private GameObject settingsButton;
-    [SerializeField] private GameObject optionsMenu;
-    [SerializeField] private GameObject options;
-    [SerializeField] private GameObject settings;
-    [SerializeField] private GameObject swapPhaseButtons;
-    public GameObject UndoButton;
-    public GameObject gameOverScreen;
-    public GameObject restartButton;
-    public GameObject nextActionButton;
-    public GameObject turnPhasePanel;
+    [Header("Gameplay")]
     public Slider pointSlider;
 
-    [Header("Popup Card References")]
-    public GameObject popupCard;
-    public GameObject popupRecipeCard;
+    public GameObject gameOverScreen;
+    public GameObject restartButton;
+
     [SerializeField] private GameObject backgroundBlur;
 
+    [Header("Options")] // Options Refers to Menu including both Settings & Quit Button, Settings refers to Hardware settings (FPS, Volume, Etc) 
+    [SerializeField] private GameObject enterOptionsMenuButton;
+    [SerializeField] private GameObject optionsMenu;
+    [SerializeField] private GameObject optionsMenuPanel;
+
+    [SerializeField] private GameObject settingsMenu;
     // public Dropdown resolutionDropdown;
     Resolution[] resolutions;
 
+    [Header("Popup Card")]
+    public GameObject popupCard;
+    public GameObject popupRecipeCard;
+
     private void Awake() {
-        // References
-        playerController = GetComponent<PlayerController>();
-        playerHand = GetComponent<PlayerHand>();
 
         /* int currentResolutionIndex = 0;
         int currentRefreshRate = Screen.currentResolution.refreshRate;
@@ -56,23 +50,26 @@ public class PlayerUI : MonoBehaviour {
         resolutionDropdown.RefreshShownValue(); */
     }
 
-    #region Menu Functions
-    public void OpenCloseOptionsMenu() {
-        optionsMenu.SetActive(!optionsMenu.activeSelf);
-        settingsButton.SetActive(!settingsButton.activeSelf);
-        ToggleOptionsMenu();
+    public void EnterOptionsMenu() {
+        enterOptionsMenuButton.SetActive(false);
+        optionsMenu.SetActive(true);
+        optionsMenuPanel.SetActive(true);
+        backgroundBlur.SetActive(true);
     }
 
-    public void ToggleOptionsMenu() {
-        options.SetActive(true);
-        settings.SetActive(false);
+    public void ExitOptionsMenu() {
+        enterOptionsMenuButton.SetActive(true);
+        optionsMenu.SetActive(false);
+        optionsMenuPanel.SetActive(false);
+
+        if (popupCard.activeSelf || popupRecipeCard.activeSelf) { return; }
+        backgroundBlur.SetActive(false);
     }
 
     public void ToggleSettingsMenu() {
-        settings.SetActive(true);
-        options.SetActive(false);
+        settingsMenu.SetActive(!settingsMenu.activeSelf);
+        optionsMenu.SetActive(!optionsMenu.activeSelf);
     }
-    #endregion
 
     public void EnterPopup(int choice) {
         if (choice == 0) { // Ingredient Card was clicked
@@ -85,40 +82,15 @@ public class PlayerUI : MonoBehaviour {
     }
 
     public void ExitPopup() {
+        if (optionsMenuPanel.activeSelf) { return; }
+
         popupCard.SetActive(false);
         popupRecipeCard.SetActive(false);
         backgroundBlur.SetActive(false);
     }
 
-    public void ChooseDeckPhase() {
-        playerController.inDeckPhase = true;
-        swapPhaseButtons.SetActive(false);
-        UndoButton.SetActive(true);
-    }
-
-    public void ChooseTradePhase() {
-        playerController.inTradePhase = true;
-        swapPhaseButtons.SetActive(false);
-        UndoButton.SetActive(true);
-    }
-
-    public void UndoPhaseChoice() {
-        playerController.inDeckPhase = false;
-        playerController.inTradePhase = false;
-        swapPhaseButtons.SetActive(true);
-        UndoButton.SetActive(false);
-
-        /* foreach (GameObject card in playerHand.swapCards) {
-            if (!card.TryGetComponent<PhotonView>(out PhotonView PV)) {
-                card.GetComponent<IngredientCardInteractibility>().ResetChosen();
-            }
-        } */
-        playerHand.swapCards.Clear();
-    }
-
     public void StartTurnUI() {
-        turnPhasePanel.SetActive(true);
-        swapPhaseButtons.SetActive(true);
+        
     }
 
     public void SetVolume(float volume) {

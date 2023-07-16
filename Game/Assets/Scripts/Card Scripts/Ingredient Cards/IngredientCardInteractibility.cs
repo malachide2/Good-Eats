@@ -54,7 +54,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     public void OnPointerEnter(PointerEventData eventData) {
         if (isTradePileCard || isPopupCard) { return; }
 
-        transform.position = new Vector2(transform.position.x, 125);
+        transform.position = new Vector2(transform.position.x, 150);
         transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -63,7 +63,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
         if (isTradePileCard || isPopupCard) { return; }
         if (lockedIn) { return; }
 
-        transform.position = new Vector2(transform.position.x, 40);
+        transform.position = new Vector2(transform.position.x, 35);
         transform.localScale = originalScale;
     }
 
@@ -105,7 +105,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     }
 
     public void ResetChosen() {
-        transform.position = new Vector2(transform.position.x, 40);
+        transform.position = new Vector2(transform.position.x, 35);
         transform.localScale = originalScale;
 
         lockedIn = false;

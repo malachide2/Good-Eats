@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Buns
   m_EditorClassIdentifier: 
   name: Buns
-  artwork: {fileID: 21300000, guid: 362476c9a0391a54f94f09adf5dcba5a, type: 3}
+  artwork: {fileID: 21300000, guid: d2cabb542c2ffb14dbf96ad22f388844, type: 3}
