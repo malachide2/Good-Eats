@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Sausage
   m_EditorClassIdentifier: 
   name: Sausage
-  artwork: {fileID: 21300000, guid: 20f8c2ae76c9d4f4db409ed15b341cb2, type: 3}
+  artwork: {fileID: 21300000, guid: 84d33fab981035a459233a46b67eb826, type: 3}

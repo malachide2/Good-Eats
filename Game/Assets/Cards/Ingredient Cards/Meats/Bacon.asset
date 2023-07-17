@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Bacon
   m_EditorClassIdentifier: 
   name: Bacon
-  artwork: {fileID: 21300000, guid: 4ca84565b2337ac43ab957cc7fea0e32, type: 3}
+  artwork: {fileID: 21300000, guid: e4e9b8d622659c242874076d5bebcfb1, type: 3}

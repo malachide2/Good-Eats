@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Salt
   m_EditorClassIdentifier: 
   name: Salt
-  artwork: {fileID: 21300000, guid: 81aeb852ff0a1244895024a8f496d37a, type: 3}
+  artwork: {fileID: 21300000, guid: 69bccf80673d9ed4ab874629742e7df5, type: 3}

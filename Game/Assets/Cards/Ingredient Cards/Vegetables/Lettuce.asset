@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Lettuce
   m_EditorClassIdentifier: 
   name: Lettuce
-  artwork: {fileID: 21300000, guid: 48ecbab797aca4f4caa0a13539e0cf4b, type: 3}
+  artwork: {fileID: 21300000, guid: b294de68f7708534ca2940544cc44e37, type: 3}

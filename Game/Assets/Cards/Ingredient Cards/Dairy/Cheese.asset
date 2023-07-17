@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Cheese
   m_EditorClassIdentifier: 
   name: Cheese
-  artwork: {fileID: 21300000, guid: 8aea78ac5ef69b84d9fe6b5ad1faaf2b, type: 3}
+  artwork: {fileID: 21300000, guid: 3e1cc74de92d0ad4e8a76c3ea07c0131, type: 3}

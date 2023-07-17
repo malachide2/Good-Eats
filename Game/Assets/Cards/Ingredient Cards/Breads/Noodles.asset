@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Noodles
   m_EditorClassIdentifier: 
   name: Noodles
-  artwork: {fileID: 21300000, guid: dc4cc759167c61140a79b7d4ec7bb7d4, type: 3}
+  artwork: {fileID: 21300000, guid: a09c8294d60682d439933cf38b8194fd, type: 3}

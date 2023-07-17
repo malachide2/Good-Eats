@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Butter
   m_EditorClassIdentifier: 
   name: Butter
-  artwork: {fileID: 21300000, guid: 3911301a8d248fa478560cb8712e8765, type: 3}
+  artwork: {fileID: 21300000, guid: 7e0207c029a4ee048a189ff14c7b4451, type: 3}

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Onions
   m_EditorClassIdentifier: 
   name: Onions
-  artwork: {fileID: 21300000, guid: eda87d222c3f1984f8fecc8cec7b25b4, type: 3}
+  artwork: {fileID: 21300000, guid: f7cae915d7f959d47b1d5ea633826cc3, type: 3}

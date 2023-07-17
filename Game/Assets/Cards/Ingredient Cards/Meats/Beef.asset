@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Beef
   m_EditorClassIdentifier: 
   name: Beef
-  artwork: {fileID: 21300000, guid: 652ef1d2091617748b28d7eaae972246, type: 3}
+  artwork: {fileID: 21300000, guid: 2cbc45cdf2eb34c408e8b45b18fd9a73, type: 3}

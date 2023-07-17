@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Potatoes
   m_EditorClassIdentifier: 
   name: Potatoes
-  artwork: {fileID: 21300000, guid: 8c35ae8c6b65da042bc824732b9f0316, type: 3}
+  artwork: {fileID: 21300000, guid: 8a49388c2c9303b43a980c8cab7e39b3, type: 3}

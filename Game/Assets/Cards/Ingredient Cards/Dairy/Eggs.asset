@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Eggs
   m_EditorClassIdentifier: 
   name: Eggs
-  artwork: {fileID: 21300000, guid: 38b1ab4b67dea94428670f5186fede2c, type: 3}
+  artwork: {fileID: 21300000, guid: fbc5f27b05194a3408c6fc447ec1d616, type: 3}

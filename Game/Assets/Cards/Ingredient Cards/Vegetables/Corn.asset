@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Corn
   m_EditorClassIdentifier: 
   name: Corn
-  artwork: {fileID: 21300000, guid: 2428126614c417640b1f692da0f8ddbc, type: 3}
+  artwork: {fileID: 21300000, guid: b4be1fe2462bd0b49895206d6b74e541, type: 3}

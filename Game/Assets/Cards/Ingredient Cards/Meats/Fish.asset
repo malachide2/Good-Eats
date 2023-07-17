@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Fish
   m_EditorClassIdentifier: 
   name: Fish
-  artwork: {fileID: 21300000, guid: d41287594ededf5448812a982665a150, type: 3}
+  artwork: {fileID: 21300000, guid: 9d826a10e6bd96140b53a66fa46a954d, type: 3}

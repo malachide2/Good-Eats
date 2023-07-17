@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Tomatoes
   m_EditorClassIdentifier: 
   name: Tomatoes
-  artwork: {fileID: 21300000, guid: e38324a6bc82fe242aaf500d9e8ff084, type: 3}
+  artwork: {fileID: 21300000, guid: b18a5c413fdee78448d450a37c08aa8c, type: 3}
