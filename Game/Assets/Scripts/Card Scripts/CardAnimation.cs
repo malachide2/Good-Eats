@@ -21,7 +21,7 @@ public class CardAnimation : MonoBehaviour {
 
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
         if (thisCard.isTradePileCard) {
-            transform.localScale = new Vector3(1 + (transform.localPosition.z*0.25f), 1 + (transform.localPosition.z*0.25f), 1);
+            transform.localScale = new Vector3(1 + (transform.localPosition.z*0.3f), 1 + (transform.localPosition.z*0.3f), 1);
         }
 
         // Reset Card
@@ -30,7 +30,7 @@ public class CardAnimation : MonoBehaviour {
             thisCard.RefreshCard();
             if (thisCard.isTradePileCard) {
                 transform.localPosition = new Vector3(originalPositionX, 0, 0);
-                transform.localRotation = new Quaternion(0f, 0f, 0f, 1f);
+                // transform.localRotation = new Quaternion(0f, 0f, 0f, 1f);
                 transform.localScale = new Vector3(0.75f, 0.75f, 1);
             }
             else {
@@ -44,7 +44,9 @@ public class CardAnimation : MonoBehaviour {
             position = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
         }
         else {
+            position = transform.position;
             position = Camera.main.ScreenToWorldPoint(transform.position);
+            position.z = -5.8f;
         }
     }
 }

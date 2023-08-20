@@ -21,6 +21,8 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     private PlayerController playerController;
     private PlayerUI playerUI;
 
+    private CardAnimation cardAnimation;
+
     [Header("Card Popup")]
     public bool isTradePileCard;
     [SerializeField] private bool isPopupCard;
@@ -36,6 +38,8 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
         playerHand = myPlayer.GetComponent<PlayerHand>();
         playerController = myPlayer.GetComponent<PlayerController>();
         playerUI = myPlayer.GetComponent<PlayerUI>();
+
+        cardAnimation = GetComponent<CardAnimation>();
 
         originalScale = transform.localScale;
     }
@@ -53,6 +57,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     // Called when the mouse first hovers over card
     public void OnPointerEnter(PointerEventData eventData) {
         if (isTradePileCard || isPopupCard) { return; }
+        if (cardAnimation.inMotion) { return; }
 
         transform.position = new Vector2(transform.position.x, 150);
         transform.localScale = new Vector3(1, 1, 1);
