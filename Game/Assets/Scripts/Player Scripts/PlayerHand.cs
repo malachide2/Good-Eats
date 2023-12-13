@@ -73,21 +73,16 @@ public class PlayerHand : MonoBehaviour {
             card2.ResetChosen();
         }
 
-        // Animations
-        CardAnimation card1Animation = swapCards[0].GetComponent<CardAnimation>();
-        CardAnimation card2Animation = swapCards[1].GetComponent<CardAnimation>();
-        card1Animation.DeterminePosition();
-        card2Animation.DeterminePosition();
-        card1Animation.targetPosition = card2Animation.position;
-        card2Animation.targetPosition = card1Animation.position;
-        card1Animation.originalPositionX = swapCards[0].transform.position.x;
-        card2Animation.originalPositionX = swapCards[1].transform.localPosition.x;
-        // swapCards[1].transform.localRotation = new Quaternion(-0.002f, 0f, 0f, 1f);
-        card1Animation.inMotion = true;
-        card2Animation.inMotion = true;
+        card1.DeterminePosition();
+        card2.DeterminePosition();
+        card1.targetPosition = card2.position;
+        card2.targetPosition = card1.position;
+        card1.originalPositionX = swapCards[0].transform.position.x;
+        card2.originalPositionX = swapCards[1].transform.localPosition.x;
+        card1.inMotion = true;
+        card2.inMotion = true;
 
         swapCards.Clear();
-        playerController.RecipePhase();
     }
 
     public void CheckRecipeCompletion() {

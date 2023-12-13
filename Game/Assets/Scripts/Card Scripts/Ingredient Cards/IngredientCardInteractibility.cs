@@ -21,14 +21,20 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     private PlayerController playerController;
     private PlayerUI playerUI;
 
-    private CardAnimation cardAnimation;
-
     [Header("Card Popup")]
     public bool isTradePileCard;
     [SerializeField] private bool isPopupCard;
 
     private Vector3 originalScale;
+
+    [Header("Position")]
+    public Vector3 position;
+    public Vector3 targetPosition;
+    public float originalPositionX;
+
     [HideInInspector] public bool lockedIn = false;
+    [HideInInspector] public float speed = 1000;
+    [HideInInspector] public bool inMotion;
 
     private void Awake() {
         // References
@@ -39,10 +45,51 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
         playerController = myPlayer.GetComponent<PlayerController>();
         playerUI = myPlayer.GetComponent<PlayerUI>();
 
-        cardAnimation = GetComponent<CardAnimation>();
-
         originalScale = transform.localScale;
+
+        // Setup
+        if (isTradePileCard) { speed = 10; }
     }
+
+    void Update() {
+        if (!inMotion) { return; }
+
+        MoveCard();
+    }
+
+    public void DeterminePosition() {
+        if (isTradePileCard) {
+            position = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
+        }
+        else {
+            position = transform.position;
+            position = Camera.main.ScreenToWorldPoint(transform.position);
+            position.z = -5.8f;
+        }
+    }
+
+    private void MoveCard() {
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        if (isTradePileCard) {
+            transform.localScale = new Vector3(1 + (transform.localPosition.z * 0.3f), 1 + (transform.localPosition.z * 0.3f), 1);
+        }
+
+        // Reset Card
+        if (transform.position == targetPosition) {
+            inMotion = false;
+            RefreshCard();
+            if (isTradePileCard) {
+                transform.localPosition = new Vector3(originalPositionX, 0, 0);
+                // transform.localRotation = new Quaternion(0f, 0f, 0f, 1f);
+                transform.localScale = new Vector3(0.75f, 0.75f, 1);
+            }
+            else {
+                transform.position = new Vector2(originalPositionX, 35);
+                playerController.RecipePhase();
+            }
+        }
+    }
+
 
     public void RefreshCard() {
         nameText.text = card.name;
@@ -57,7 +104,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     // Called when the mouse first hovers over card
     public void OnPointerEnter(PointerEventData eventData) {
         if (isTradePileCard || isPopupCard) { return; }
-        if (cardAnimation.inMotion) { return; }
+        if (inMotion) { return; }
 
         transform.position = new Vector2(transform.position.x, 150);
         transform.localScale = new Vector3(1, 1, 1);

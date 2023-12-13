@@ -149,7 +149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8452375310860787037
 RectTransform:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ RectTransform:
   - {fileID: 8452375311641569797}
   - {fileID: 6271195564581214483}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -193,7 +193,12 @@ MonoBehaviour:
   myPlayer: {fileID: 0}
   isTradePileCard: 0
   isPopupCard: 0
+  position: {x: 0, y: 0, z: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  originalPositionX: 0
   lockedIn: 0
+  speed: 1000
+  inMotion: 0
 --- !u!1 &8452375311615014109
 GameObject:
   m_ObjectHideFlags: 0
