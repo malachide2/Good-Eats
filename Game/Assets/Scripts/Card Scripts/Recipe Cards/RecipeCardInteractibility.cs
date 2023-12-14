@@ -58,16 +58,16 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
     public void OnPointerEnter(PointerEventData eventData) {
         if (isPopupCard) { return; }
 
-        transform.position = new Vector2(transform.position.x, 125);
-        transform.localScale = new Vector3(1, 1, 1);
+        transform.position = new Vector2(transform.position.x, -2);
+        transform.localScale = new Vector2(1.25f, 1.25f);
     }
 
     // Called when the mouse is no longer hovering the card
     public void OnPointerExit(PointerEventData eventData) {
         if (isPopupCard) { return; }
 
-        transform.position = new Vector2(transform.position.x, 40);
-        transform.localScale = originalScale;
+        transform.position = new Vector2(transform.position.x, -2.75f);
+        transform.localScale = new Vector2(1, 1);
     }
 
     public void SelectCard() {

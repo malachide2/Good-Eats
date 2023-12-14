@@ -17,6 +17,7 @@ public class PlayerHand : MonoBehaviour {
 
     [Header("Cards in Hand")]
     public List<GameObject> swapCards;
+    public bool isSwapping;
 
     private void Awake() {
         // References
@@ -77,11 +78,10 @@ public class PlayerHand : MonoBehaviour {
         card2.DeterminePosition();
         card1.targetPosition = card2.position;
         card2.targetPosition = card1.position;
-        card1.originalPositionX = swapCards[0].transform.position.x;
-        card2.originalPositionX = swapCards[1].transform.localPosition.x;
         card1.inMotion = true;
         card2.inMotion = true;
 
+        isSwapping = true;
         swapCards.Clear();
     }
 

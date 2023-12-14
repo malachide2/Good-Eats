@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DeckManager : MonoBehaviour {
     // References
@@ -11,6 +13,7 @@ public class DeckManager : MonoBehaviour {
     private PlayerHand playerHand;
 
     public GameObject[] tradePile;
+    public TopCardMotion topCard;
 
     [Header("Decks")]
     public List<IngredientCard> ingredientCardDeck = new List<IngredientCard>();
@@ -112,16 +115,18 @@ public class DeckManager : MonoBehaviour {
     public void SwapWithDeck() {
         if (!(playerHand.swapCards.Count == 1)) { return; }
         // Shuffle Card into Deck & Cleanup
-        GameObject oldCard = playerHand.swapCards[0];
-        ingredientCardDeck.Add(oldCard.GetComponent<IngredientCardInteractibility>().card);
+        IngredientCardInteractibility oldCard = playerHand.swapCards[0].GetComponent<IngredientCardInteractibility>();
+        ingredientCardDeck.Add(oldCard.card);
         ShuffleIngredientDeck();
-
-        oldCard.GetComponent<IngredientCardInteractibility>().ResetChosen();
-        oldCard.SetActive(false);
         playerHand.swapCards.Clear();
-        // Draw new card
-        playerHand.DrawIngredientCards();
+        playerHand.isSwapping = true;
+        playerController.inDeckSwap = true;
 
-        playerController.RecipePhase();
+        oldCard.DeterminePosition();
+        oldCard.targetPosition = new Vector2(-2, 0);
+        topCard.targetPosition = oldCard.position;
+        oldCard.transform.localScale = new Vector2(0.75f, 0.75f);
+        oldCard.inMotion = true;
+        topCard.inMotion = true;
     }
 }

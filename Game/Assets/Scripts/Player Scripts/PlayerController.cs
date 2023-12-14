@@ -13,9 +13,8 @@ public class PlayerController : MonoBehaviour {
     private PlayerHand playerHand;
 
     [HideInInspector] public bool isTurn;
-    [HideInInspector] public int phase;
-    [HideInInspector] public bool inDeckPhase;
     [HideInInspector] public bool inTradePhase;
+    [HideInInspector] public bool inDeckSwap;
 
     public int points = 0;
 
