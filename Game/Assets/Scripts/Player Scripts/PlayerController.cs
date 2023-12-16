@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public bool isTurn;
     [HideInInspector] public bool inTradePhase;
     [HideInInspector] public bool inDeckSwap;
+    [HideInInspector] public bool inRecipePhase;
 
     public int points = 0;
 
@@ -35,10 +36,13 @@ public class PlayerController : MonoBehaviour {
 
     public void RecipePhase() {
         inTradePhase = false;
-        playerHand.CheckRecipeCompletion();
+
+        inRecipePhase = true;
+        StartCoroutine(playerHand.CheckRecipeCompletionRoutine());
     }
 
     public void EndTurn() {
+        inRecipePhase = false;
         isTurn = false;
         gameManager.StartNextTurn();
     }

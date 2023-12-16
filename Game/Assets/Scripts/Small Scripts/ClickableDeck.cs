@@ -7,6 +7,6 @@ public class ClickableDeck : MonoBehaviour {
     [SerializeField] private DeckManager deckManager;
 
     private void OnMouseDown() {
-        deckManager.SwapWithDeck();
+        StartCoroutine(deckManager.SwapWithDeckRoutine());
     }
 }

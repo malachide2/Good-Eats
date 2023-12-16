@@ -13,7 +13,7 @@ public class DeckManager : MonoBehaviour {
     private PlayerHand playerHand;
 
     public GameObject[] tradePile;
-    public TopCardMotion topCard;
+    public TopCardMotion[] topCard;
 
     [Header("Decks")]
     public List<IngredientCard> ingredientCardDeck = new List<IngredientCard>();
@@ -112,21 +112,29 @@ public class DeckManager : MonoBehaviour {
     }
     #endregion
 
-    public void SwapWithDeck() {
-        if (!(playerHand.swapCards.Count == 1)) { return; }
-        // Shuffle Card into Deck & Cleanup
-        IngredientCardInteractibility oldCard = playerHand.swapCards[0].GetComponent<IngredientCardInteractibility>();
-        ingredientCardDeck.Add(oldCard.card);
-        ShuffleIngredientDeck();
-        playerHand.swapCards.Clear();
-        playerHand.isSwapping = true;
-        playerController.inDeckSwap = true;
+    public IEnumerator SwapWithDeckRoutine() {
+        if (playerHand.swapCards.Count == 1) {
 
-        oldCard.DeterminePosition();
-        oldCard.targetPosition = new Vector2(-2, 0);
-        topCard.targetPosition = oldCard.position;
-        oldCard.transform.localScale = new Vector2(0.75f, 0.75f);
-        oldCard.inMotion = true;
-        topCard.inMotion = true;
+            playerController.inDeckSwap = true;
+            // Shuffle Card into Deck & Cleanup
+            IngredientCardInteractibility oldCard = playerHand.swapCards[0].GetComponent<IngredientCardInteractibility>();
+            playerHand.swapCards.Clear();
+            ingredientCardDeck.Add(oldCard.card);
+            ShuffleIngredientDeck();
+
+            oldCard.DeterminePosition();
+            oldCard.targetPosition = new Vector2(-2, 0);
+            oldCard.transform.localScale = new Vector2(0.75f, 0.75f);
+            oldCard.inMotion = true;
+
+            yield return new WaitForSeconds(2);
+
+            StartCoroutine(playerHand.DrawIngredientCardsRoutine());
+
+            yield return new WaitForSeconds(2);
+
+            playerController.inDeckSwap = false;
+            playerController.RecipePhase();
+        }
     }
 }

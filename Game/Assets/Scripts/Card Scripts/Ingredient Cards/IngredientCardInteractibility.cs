@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public IngredientCard card;
@@ -28,9 +29,8 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     public Vector2 position;
     public Vector3 targetPosition;
 
-    [HideInInspector] public bool lockedIn = false;
-    private float speed = 3;
-    [HideInInspector] public bool inMotion;
+    public bool lockedIn = false;
+    public bool inMotion;
 
     private void Awake() {
         // References
@@ -42,63 +42,72 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
         playerUI = myPlayer.GetComponent<PlayerUI>();
     }
 
-    public void DeterminePosition() {
-        position = transform.position;
-    }
-
     void Update() {
         if (!inMotion) { return; }
         MoveCard();
     }
 
+    public void DeterminePosition() {
+        position = transform.position;
+    }
+
     private void MoveCard() {
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        float animationTime = 1;
+        float distance = (float)Math.Sqrt(Math.Pow(position.x - targetPosition.x, 2) + Math.Pow(position.y - targetPosition.y, 2));
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance/animationTime * Time.deltaTime);
 
-        // Reset Card
-        if (transform.position == targetPosition) {
-            inMotion = false;
-            transform.position = position;
-            RefreshCard();
+        if (transform.position != targetPosition) { return; }
 
-            if (isTradePileCard) { return; }
-                
+        inMotion = false;
+        transform.position = position;
+
+        if (playerController.inTradePhase) {
             if (playerController.inDeckSwap) {
                 ResetChosen();
                 gameObject.SetActive(false);
-                playerHand.DrawIngredientCards();
-                playerController.inDeckSwap = false;
             }
-
-            playerHand.isSwapping = false;
-            playerController.RecipePhase();
+            else {
+                if (!isTradePileCard) { ResetChosen(); }
+                RefreshCard();
+            }
+        }
+        else if (playerController.inRecipePhase) {
+            gameObject.SetActive(false);
         }
     }
 
+    public void ChangeCard(IngredientCard replacementCard) {
+        card = replacementCard;
+        RefreshCard();
+    } 
 
     public void RefreshCard() {
         nameText.text = card.name;
         artworkImage.sprite = card.artwork;
     }
 
-    public void ChangeCard(IngredientCard replacementCard) {
-        card = replacementCard;
-        RefreshCard();
-    }
-
     // Called when the mouse first hovers over card
     public void OnPointerEnter(PointerEventData eventData) {
         if (isTradePileCard || isPopupCard) { return; }
-        if (lockedIn || inMotion || playerHand.isSwapping) { return; }
+        if (lockedIn || inMotion) { return; }
 
-        transform.position = new Vector2(transform.position.x, -2);
-        transform.localScale = new Vector2(1.25f, 1.25f);
+        EnlargeCard();
     }
 
     // Called when the mouse is no longer hovering the card
     public void OnPointerExit(PointerEventData eventData) {
         if (isTradePileCard || isPopupCard) { return; }
-        if (lockedIn || inMotion || playerHand.isSwapping) { return; }
+        if (lockedIn || inMotion) { return; }
 
+        NormalizeCard();
+    }
+
+    public void EnlargeCard() {
+        transform.position = new Vector2(transform.position.x, -2);
+        transform.localScale = new Vector2(1.25f, 1.25f);
+    }
+
+    public void NormalizeCard() {
         transform.position = new Vector2(transform.position.x, -2.75f);
         transform.localScale = new Vector2(1, 1);
     }
@@ -120,7 +129,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
                     playerHand.swapCards.Add(gameObject);
                     lockedIn = true;
 
-                    playerHand.SwapCards();
+                    StartCoroutine(playerHand.SwapCardsRoutine());
                 }
             }
             else {
@@ -141,8 +150,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     }
 
     public void ResetChosen() {
-        transform.position = new Vector2(transform.position.x, -2.75f);
-        transform.localScale = new Vector2(1, 1);
+        NormalizeCard();
 
         lockedIn = false;
     }

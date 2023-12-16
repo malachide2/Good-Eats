@@ -17,7 +17,6 @@ public class PlayerHand : MonoBehaviour {
 
     [Header("Cards in Hand")]
     public List<GameObject> swapCards;
-    public bool isSwapping;
 
     private void Awake() {
         // References
@@ -30,19 +29,37 @@ public class PlayerHand : MonoBehaviour {
 
     public void StartingDraw() {
         // Draw Cards
-        DrawIngredientCards();
+        StartCoroutine(DrawIngredientCardsRoutine());
         DrawRecipeCard();
     }
 
     #region Draw Card Functions
-    public void DrawIngredientCards() {
-        foreach (GameObject blankCard in ingredientCards) {
-            if (blankCard.activeInHierarchy) { continue; }
-            // Set Blank Card Active & Assign Top Card
-            blankCard.SetActive(true);
-            blankCard.GetComponent<IngredientCardInteractibility>().ChangeCard(deckManager.ingredientCardDeck[0]);
-            // Remove Top Card
-            deckManager.ingredientCardDeck.RemoveAt(0);
+    public IEnumerator DrawIngredientCardsRoutine() {
+        List<IngredientCard> currentCards = new List<IngredientCard>();
+        foreach (GameObject cardGO in ingredientCards) {
+            if (cardGO.activeInHierarchy) {
+                currentCards.Add(cardGO.GetComponent<IngredientCardInteractibility>().card);
+            }
+        }
+        for (int i = 0; i < ingredientCards.Length - currentCards.Count; i++) {
+            deckManager.topCard[i].targetPosition = new Vector2(1.5f + (-0.9f*i),-2.75f);
+            deckManager.topCard[i].inMotion = true;
+        }
+
+        yield return new WaitForSeconds(1.1f);
+
+        for (int i = 0; i < ingredientCards.Length; i++) {
+            if (!ingredientCards[i].activeInHierarchy) {
+                ingredientCards[i].SetActive(true);
+            }
+
+            if (i < currentCards.Count) {
+                ingredientCards[i].GetComponent<IngredientCardInteractibility>().ChangeCard(currentCards[i]);
+            }
+            else {
+                ingredientCards[i].GetComponent<IngredientCardInteractibility>().ChangeCard(deckManager.ingredientCardDeck[0]);
+                deckManager.ingredientCardDeck.RemoveAt(0);
+            }           
         }
     }
 
@@ -55,37 +72,31 @@ public class PlayerHand : MonoBehaviour {
     }
     #endregion
 
-    public void SwapCards() {
-        if (!(swapCards.Count == 2)) { return; }
+    public IEnumerator SwapCardsRoutine() {
+        if (swapCards.Count == 2) {
+            foreach (GameObject card in swapCards) {
+                IngredientCardInteractibility cardInteractibility = card.GetComponent<IngredientCardInteractibility>();
+                cardInteractibility.DeterminePosition();
+                cardInteractibility.inMotion = true;
+            }
 
-        IngredientCardInteractibility card1 = swapCards[0].GetComponent<IngredientCardInteractibility>();
-        IngredientCardInteractibility card2 = swapCards[1].GetComponent<IngredientCardInteractibility>();
-        IngredientCard originalCard1 = card1.card;
+            IngredientCardInteractibility card1 = swapCards[0].GetComponent<IngredientCardInteractibility>();
+            IngredientCardInteractibility card2 = swapCards[1].GetComponent<IngredientCardInteractibility>();
+            swapCards.Clear();
 
-        card1.card = card2.card;
-        card2.card = originalCard1;
+            IngredientCard originalCard1 = card1.card;
+            card1.card = card2.card;
+            card2.card = originalCard1;
+            card1.targetPosition = card2.position;
+            card2.targetPosition = card1.position;
 
-        // If card 2 is the one in the trade pile, reset card 1
-        // Otherwise, reset card 2
-        if (card2.isTradePileCard) { 
-            card1.ResetChosen();
+            yield return new WaitForSeconds(2);
+
+            playerController.RecipePhase();
         }
-        else {
-            card2.ResetChosen();
-        }
-
-        card1.DeterminePosition();
-        card2.DeterminePosition();
-        card1.targetPosition = card2.position;
-        card2.targetPosition = card1.position;
-        card1.inMotion = true;
-        card2.inMotion = true;
-
-        isSwapping = true;
-        swapCards.Clear();
     }
 
-    public void CheckRecipeCompletion() {
+    public IEnumerator CheckRecipeCompletionRoutine() {
         List<GameObject> correctIngredients = new List<GameObject>();
         List<IngredientCard> ingredientsInRecipe = new List<IngredientCard>(recipeCard.GetComponent<RecipeCardInteractibility>().card.ingredientList);
         
@@ -129,11 +140,17 @@ public class PlayerHand : MonoBehaviour {
             // Shuffle old ingredients into deck
             foreach (GameObject correctIngredient in correctIngredients) {
                 deckManager.ingredientCardDeck.Add(correctIngredient.GetComponent<IngredientCardInteractibility>().card);
-                correctIngredient.SetActive(false);
+                correctIngredient.GetComponent<IngredientCardInteractibility>().DeterminePosition();
+                correctIngredient.GetComponent<IngredientCardInteractibility>().targetPosition = new Vector2(-2, 0);
+                correctIngredient.GetComponent<IngredientCardInteractibility>().inMotion = true;
             }
-            // Draw new ingredients
             deckManager.ShuffleIngredientDeck();
-            DrawIngredientCards();
+
+            yield return new WaitForSeconds(2);
+
+            StartCoroutine(DrawIngredientCardsRoutine());
+
+            yield return new WaitForSeconds(2);
         }
 
         playerController.EndTurn();

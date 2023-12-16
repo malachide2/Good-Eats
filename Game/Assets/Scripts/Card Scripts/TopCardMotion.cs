@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,7 +9,6 @@ public class TopCardMotion : MonoBehaviour {
     public Vector3 position;
     public Vector3 targetPosition;
 
-    private float speed = 3;
     [HideInInspector] public bool inMotion;
 
     private void Awake() {
@@ -21,7 +21,9 @@ public class TopCardMotion : MonoBehaviour {
     }
 
     private void MoveCard() {
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        float animationTime = 1;
+        float distance = (float)Math.Sqrt(Math.Pow(position.x - targetPosition.x, 2) + Math.Pow(position.y - targetPosition.y, 2));
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance / animationTime * Time.deltaTime);
 
         // Reset Card
         if (transform.position == targetPosition) {

@@ -32,20 +32,17 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        StartGame();
+        StartCoroutine(StartGameRoutine());
     }
 
     #region Start Game Functions
-    private void StartGame() {
-        /* // Add Each Player Data to Dictionary
-        for (int playerNumber = 0; playerNumber < PhotonNetwork.PlayerList.Length; playerNumber++) {
-            playerData.Add(PhotonNetwork.PlayerList[playerNumber].ActorNumber, new PlayerData("Placeholder", 0));
-        } */
-
+    private IEnumerator StartGameRoutine() {
         deckManager.StartDecks();
 
         // Draw Cards in Order of Player Number
         playerHand.StartingDraw();
+
+        yield return new WaitForSeconds(3);
         foreach (GameObject enemy in enemies) {
             enemy.GetComponent<EnemyHand>().StartingDraw();
         }
