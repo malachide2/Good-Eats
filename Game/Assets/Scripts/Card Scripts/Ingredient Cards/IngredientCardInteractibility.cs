@@ -13,6 +13,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
 
     [Header("References")]
     [SerializeField] private GameObject gameManagerGO;
+    private GameManager gameManager;
     private CardDatabase cardDatabase;
     private DeckManager deckManager;
 
@@ -34,6 +35,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
 
     private void Awake() {
         // References
+        gameManager = gameManagerGO.GetComponent<GameManager>();
         cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
         deckManager = gameManagerGO.GetComponent<DeckManager>();
 
@@ -52,9 +54,9 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     }
 
     private void MoveCard() {
-        float animationTime = 1;
+        float animationTime = 0.5f;
         float distance = (float)Math.Sqrt(Math.Pow(position.x - targetPosition.x, 2) + Math.Pow(position.y - targetPosition.y, 2));
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance/animationTime * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * gameManager.gameSpeed * Time.deltaTime / animationTime);
 
         if (transform.position != targetPosition) { return; }
 

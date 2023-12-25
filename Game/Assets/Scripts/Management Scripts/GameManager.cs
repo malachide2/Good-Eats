@@ -16,13 +16,9 @@ public class GameManager : MonoBehaviour {
     public GameObject[] enemies;
     private int playerNumber = -1;
 
-    private void Awake() {
-        // If we started in the main game scene, load the menu scene
-       /* if (not in the right scene?) {
-            SceneManager.LoadScene("Loading Screen");
-            return;
-        } */
+    public float gameSpeed = 2;
 
+    private void Awake() {
         // References
         Instance = this;
         deckManager = GetComponent<DeckManager>();
@@ -39,15 +35,23 @@ public class GameManager : MonoBehaviour {
     private IEnumerator StartGameRoutine() {
         deckManager.StartDecks();
 
+        yield return new WaitForSeconds(2);
+
         // Draw Cards in Order of Player Number
         playerHand.StartingDraw();
 
-        yield return new WaitForSeconds(3);
-        foreach (GameObject enemy in enemies) {
-            enemy.GetComponent<EnemyHand>().StartingDraw();
+        yield return new WaitForSeconds(1.5f / gameSpeed);
+        
+        for (int i = 0; i < enemies.Length; i++) {
+            enemies[i].GetComponent<EnemyController>().enemyNumber = i;
+            enemies[i].GetComponent<EnemyHand>().StartingDraw();
+            yield return new WaitForSeconds(0.5f / gameSpeed);
+            enemies[i].GetComponent<EnemyController>().enemyHandGO.SetActive(true);
         }
 
-        deckManager.StartTradePile();
+        StartCoroutine(deckManager.StartTradePileRoutine());
+
+        yield return new WaitForSeconds(0.5f / gameSpeed);
 
         StartNextTurn();
         

@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class DeckManager : MonoBehaviour {
     // References
+    private GameManager gameManager;
     private CardDatabase cardDatabase;
 
     [SerializeField] private GameObject myPlayer;
@@ -21,6 +22,7 @@ public class DeckManager : MonoBehaviour {
 
     private void Awake() {
         // References
+        gameManager = GetComponent<GameManager>();
         cardDatabase = GetComponent<CardDatabase>();
 
         playerController = myPlayer.GetComponent<PlayerController>();
@@ -61,7 +63,13 @@ public class DeckManager : MonoBehaviour {
         // for (int i = 0; i < ingredientCardDeck.Count; i++) { Debug.Log(ingredientCardDeck[i].name); }
     }
 
-    public void StartTradePile() {
+    public IEnumerator StartTradePileRoutine() {
+        for (int i = 0; i < 4; i++) {
+            topCard[i].MoveCardFromTo(topCard[i].originalPosition, new Vector2(-0.9f + (0.6f * i), 0));
+        }
+
+        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+
         for (int i = 0; i < 4; i++) {
             // Set Blank Card Active & Assign Top Card
             GameObject tradePileCard = tradePile[i];
@@ -127,11 +135,11 @@ public class DeckManager : MonoBehaviour {
             oldCard.transform.localScale = new Vector2(0.75f, 0.75f);
             oldCard.inMotion = true;
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.75f / gameManager.gameSpeed);
 
             StartCoroutine(playerHand.DrawIngredientCardsRoutine());
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
 
             playerController.inDeckSwap = false;
             playerController.RecipePhase();

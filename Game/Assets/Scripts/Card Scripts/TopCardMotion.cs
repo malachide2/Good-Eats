@@ -2,17 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class TopCardMotion : MonoBehaviour {
-    public Vector3 position;
-    public Vector3 targetPosition;
+    [SerializeField] private GameManager gameManager;
 
-    [HideInInspector] public bool inMotion;
+    [ReadOnly] public Vector2 originalPosition;
+    private Vector3 targetPosition;
+    private float distance;
+    private bool inMotion;
 
     private void Awake() {
-        position = transform.position;
+        originalPosition = transform.position;
     }
 
     void Update() {
@@ -21,14 +24,21 @@ public class TopCardMotion : MonoBehaviour {
     }
 
     private void MoveCard() {
-        float animationTime = 1;
-        float distance = (float)Math.Sqrt(Math.Pow(position.x - targetPosition.x, 2) + Math.Pow(position.y - targetPosition.y, 2));
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance / animationTime * Time.deltaTime);
+        float animationTime = 0.5f;
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * gameManager.gameSpeed * Time.deltaTime / animationTime);
 
         // Reset Card
         if (transform.position == targetPosition) {
             inMotion = false;
-            transform.position = position;
+            transform.position = originalPosition;
         }
+    }
+
+    public void MoveCardFromTo(Vector2 startLocation, Vector2 endLocation) {
+        transform.position = startLocation;
+        targetPosition = endLocation;
+        distance = (float)Math.Sqrt(Math.Pow(startLocation.x - endLocation.x, 2) + Math.Pow(startLocation.y - endLocation.y, 2));
+
+        inMotion = true;
     }
 }

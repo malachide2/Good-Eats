@@ -30,7 +30,7 @@ public class PlayerHand : MonoBehaviour {
     public void StartingDraw() {
         // Draw Cards
         StartCoroutine(DrawIngredientCardsRoutine());
-        DrawRecipeCard();
+        StartCoroutine(DrawRecipeCardRoutine());
     }
 
     #region Draw Card Functions
@@ -42,11 +42,10 @@ public class PlayerHand : MonoBehaviour {
             }
         }
         for (int i = 0; i < ingredientCards.Length - currentCards.Count; i++) {
-            deckManager.topCard[i].targetPosition = new Vector2(1.5f + (-0.9f*i),-2.75f);
-            deckManager.topCard[i].inMotion = true;
+            deckManager.topCard[i].MoveCardFromTo(deckManager.topCard[i].originalPosition, new Vector2(1.5f + (-0.9f * i), -2.75f));
         }
 
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
 
         for (int i = 0; i < ingredientCards.Length; i++) {
             if (!ingredientCards[i].activeInHierarchy) {
@@ -63,12 +62,20 @@ public class PlayerHand : MonoBehaviour {
         }
     }
 
-    public void DrawRecipeCard() {
-        // Set Blank Card Active & Assign Top Card
-        recipeCard.SetActive(true);
+    public IEnumerator DrawRecipeCardRoutine() {
         recipeCard.GetComponent<RecipeCardInteractibility>().ChangeCard(deckManager.recipeCardDeck[0]);
-        // Remove Top Card
+        playerUI.popupRecipeCard.GetComponent<RecipeCardInteractibility>().ChangeCard(deckManager.recipeCardDeck[0]);
         deckManager.recipeCardDeck.RemoveAt(0);
+        playerUI.popupRecipeCard.SetActive(true);
+        recipeCard.transform.position = Vector3.zero;
+
+        yield return new WaitForSeconds(1 / gameManager.gameSpeed);
+
+        playerUI.popupRecipeCard.SetActive(false);
+        recipeCard.SetActive(true);
+        recipeCard.GetComponent<RecipeCardInteractibility>().targetPosition = new Vector2(3, -2.75f);
+        recipeCard.GetComponent<RecipeCardInteractibility>().position = new Vector2(0, 0);
+        recipeCard.GetComponent<RecipeCardInteractibility>().inMotion = true;
     }
     #endregion
 
@@ -90,7 +97,7 @@ public class PlayerHand : MonoBehaviour {
             card1.targetPosition = card2.position;
             card2.targetPosition = card1.position;
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
 
             playerController.RecipePhase();
         }
@@ -132,10 +139,9 @@ public class PlayerHand : MonoBehaviour {
                 gameManager.EndGame();
             }
 
-            // Get a new recipe
-            deckManager.recipeCardDeck.Add(recipeCard.GetComponent<RecipeCardInteractibility>().card);
-            recipeCard.SetActive(false);
-            DrawRecipeCard();
+            recipeCard.GetComponent<RecipeCardInteractibility>().targetPosition = new Vector2(0, 0);
+            recipeCard.GetComponent<RecipeCardInteractibility>().position = new Vector2(3, -2.75f);
+            recipeCard.GetComponent<RecipeCardInteractibility>().inMotion = true;
 
             // Shuffle old ingredients into deck
             foreach (GameObject correctIngredient in correctIngredients) {
@@ -146,13 +152,22 @@ public class PlayerHand : MonoBehaviour {
             }
             deckManager.ShuffleIngredientDeck();
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.5f / gameManager.gameSpeed); // Time for ingredient and recipe animation
 
+            deckManager.recipeCardDeck.Add(recipeCard.GetComponent<RecipeCardInteractibility>().card);
+            recipeCard.SetActive(false);
+            playerUI.popupRecipeCard.GetComponent<RecipeCardInteractibility>().ChangeCard(recipeCard.GetComponent<RecipeCardInteractibility>().card);
+            playerUI.popupRecipeCard.SetActive(true);
+
+            yield return new WaitForSeconds(1 / gameManager.gameSpeed);
+
+            StartCoroutine(DrawRecipeCardRoutine());
             StartCoroutine(DrawIngredientCardsRoutine());
-
-            yield return new WaitForSeconds(2);
+            
+            yield return new WaitForSeconds(1.5f / gameManager.gameSpeed);
         }
 
+        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
         playerController.EndTurn();
     }
 }

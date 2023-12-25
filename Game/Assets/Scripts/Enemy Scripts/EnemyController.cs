@@ -11,9 +11,12 @@ public class EnemyController : MonoBehaviour {
     private DeckManager deckManager;
 
     private EnemyHand enemyHand;
+    public GameObject enemyHandGO;
 
     public Slider pointSlider;
     public int points = 0;
+
+    public int enemyNumber;
 
     private void Awake() {
         // References
@@ -24,8 +27,6 @@ public class EnemyController : MonoBehaviour {
     }
 
     public IEnumerator TakeTurnRoutine() {
-        yield return new WaitForSeconds(1);
-        
         enemyHand.DetermineCardsNeeded();
 
         // Ensures AI doesn't always make the best move
@@ -36,11 +37,12 @@ public class EnemyController : MonoBehaviour {
         else {
             // Chooses a random trade pile card to swap with
             skillMove = Random.Range(0, 4);
-            SwapWithTradePile(deckManager.tradePile[skillMove]);
+            StartCoroutine(SwapWithTradePileRoutine(deckManager.tradePile[skillMove]));
         }
 
-        enemyHand.CheckRecipeCompletion();
-        gameManager.StartNextTurn();
+        yield return new WaitForSeconds(1.2f / gameManager.gameSpeed);
+
+        StartCoroutine(enemyHand.CheckRecipeCompletionRoutine());
     }
 
     private void MakeBestMove() {
@@ -51,7 +53,7 @@ public class EnemyController : MonoBehaviour {
             IngredientCard tradePileCard = item.GetComponent<IngredientCardInteractibility>().card;
             // If this card is needed, swap the card in hand for this card
             if (enemyHand.ingredientsNeeded.Contains(tradePileCard)) {
-                SwapWithTradePile(item);
+                StartCoroutine(SwapWithTradePileRoutine(item));
 
                 swapHasBeenDone = true;
                 break;
@@ -59,21 +61,36 @@ public class EnemyController : MonoBehaviour {
         }
 
         if (!swapHasBeenDone) {
-            SwapWithDeck();
+            StartCoroutine(SwapWithDeckRoutine());
         }
     }
 
-    private void SwapWithTradePile(GameObject cardToSwap) {
+    private IEnumerator SwapWithTradePileRoutine(GameObject cardToSwap) {
         IngredientCard card = cardToSwap.GetComponent<IngredientCardInteractibility>().card;
         enemyHand.ingredientCards[enemyHand.ingredientCards.IndexOf(enemyHand.incorrectIngredients[0])] = card;
         cardToSwap.GetComponent<IngredientCardInteractibility>().ChangeCard(enemyHand.incorrectIngredients[0]);
+
+        cardToSwap.SetActive(false);
+        enemyHand.ingredientCardsGO[5].SetActive(false);
+        deckManager.topCard[0].MoveCardFromTo(cardToSwap.transform.position, new Vector2(-2 + (2.75f * enemyNumber), 1.6f));
+        deckManager.topCard[1].MoveCardFromTo(new Vector2(-2 + (2.75f * enemyNumber), 1.6f), cardToSwap.transform.position);
+
+        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+
+        cardToSwap.SetActive(true);
+        enemyHand.ingredientCardsGO[5].SetActive(true);
     }
 
-    private void SwapWithDeck() {
+    private IEnumerator SwapWithDeckRoutine() {
         // Take any of the incorrect ingredients & Put it in deck & Draw new card
         enemyHand.ingredientCards.Remove(enemyHand.incorrectIngredients[0]);
         deckManager.ingredientCardDeck.Add(enemyHand.incorrectIngredients[0]);
         deckManager.ShuffleIngredientDeck();
+        enemyHand.ingredientCardsGO[5].SetActive(false);
+        deckManager.topCard[0].MoveCardFromTo(new Vector2(-2 + (2.75f * enemyNumber), 1.6f), new Vector2(-2, 0));
+        yield return new WaitForSeconds(0.7f / gameManager.gameSpeed);
         enemyHand.DrawIngredientCards(1);
+        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+        enemyHand.ingredientCardsGO[5].SetActive(true);
     }
 }

@@ -11,6 +11,7 @@ public class EnemyHand : MonoBehaviour {
     private EnemyController enemyController;
 
     public List<IngredientCard> ingredientCards = new List<IngredientCard>();
+    public GameObject[] ingredientCardsGO;
     public RecipeCard recipeCard;
 
     public List<IngredientCard> ingredientsNeeded;
@@ -36,6 +37,8 @@ public class EnemyHand : MonoBehaviour {
             // Assign Top Card & Remove from deck
             ingredientCards.Add(deckManager.ingredientCardDeck[0]);
             deckManager.ingredientCardDeck.RemoveAt(0);
+
+            deckManager.topCard[i].MoveCardFromTo(deckManager.topCard[i].originalPosition, new Vector2(-2 + (2.75f * enemyController.enemyNumber) + (-0.35f * i), 1.6f));
         }
     }
 
@@ -45,7 +48,7 @@ public class EnemyHand : MonoBehaviour {
         deckManager.recipeCardDeck.RemoveAt(0);
     }
 
-    public void CheckRecipeCompletion() {
+    public IEnumerator CheckRecipeCompletionRoutine() {
         DetermineCardsNeeded();
         if (correctIngredients.Count == recipeCard.ingredientList.Length) { // If recipe is completed
             // Add points
@@ -65,10 +68,25 @@ public class EnemyHand : MonoBehaviour {
                 deckManager.ingredientCardDeck.Add(correctIngredientCard);
                 ingredientCards.Remove(correctIngredientCard);
             }
+
+            for (int i = 0; i < correctIngredients.Count; i++) {
+                deckManager.topCard[i].MoveCardFromTo(new Vector2(-2 + (2.75f * enemyController.enemyNumber) + (-0.35f * i), 1.6f), deckManager.topCard[i].originalPosition);
+                ingredientCardsGO[5 - i].SetActive(false);
+            }
+
+            yield return new WaitForSeconds(1 / gameManager.gameSpeed);
             // Draw new ingredients
             deckManager.ShuffleIngredientDeck();
             DrawIngredientCards(correctIngredients.Count);
+
+            yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+            for (int i = 0; i < correctIngredients.Count; i++) {
+                ingredientCardsGO[5 - i].SetActive(true);
+            }
         }
+
+        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+        gameManager.StartNextTurn();
     }
 
     public void DetermineCardsNeeded() {

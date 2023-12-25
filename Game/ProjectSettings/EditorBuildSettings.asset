@@ -6,18 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Loading Screen.unity
-    guid: 1ec10c5143458734b97c994ea58e9660
-  - enabled: 1
-    path: Assets/Scenes/Room Finder.unity
-    guid: c3d29a3575fb0ab4984f58e29af05930
-  - enabled: 1
-    path: Assets/Scenes/Room.unity
-    guid: 4a2ccdc42261f0b4f901b19a19902738
+    path: Assets/Scenes/Main Menu.unity
+    guid: e2c1b37843ac9ef4e83a08f80a2dea17
   - enabled: 1
     path: Assets/Scenes/Main Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
-    guid: e2c1b37843ac9ef4e83a08f80a2dea17
   m_configObjects: {}

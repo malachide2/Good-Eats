@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System;
 
 public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public RecipeCard card;
@@ -15,6 +16,7 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
 
     [Header("References")]
     [SerializeField] private GameObject gameManagerGO;
+    private GameManager gameManager;
     private CardDatabase cardDatabase;
 
     [SerializeField] private GameObject myPlayer;
@@ -23,15 +25,33 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
     [Header("Card Popup")]
     [SerializeField] private bool isPopupCard;
 
-    private Vector3 originalScale;
+    [Header("Position")]
+    public Vector2 position;
+    public Vector3 targetPosition;
+    public bool inMotion;
 
     private void Awake() {
         // References
+        gameManager = gameManagerGO.GetComponent<GameManager>();
         cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
-
         playerUI = myPlayer.GetComponent<PlayerUI>();
 
-        originalScale = transform.localScale;
+        position = transform.position;
+    }
+
+    void Update() {
+        if (!inMotion) { return; }
+        MoveCard();
+    }
+
+    private void MoveCard() {
+        float animationTime = 0.5f;
+        float distance = (float)Math.Sqrt(Math.Pow(position.x - targetPosition.x, 2) + Math.Pow(position.y - targetPosition.y, 2));
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * gameManager.gameSpeed * Time.deltaTime / animationTime);
+
+        if (transform.position != targetPosition) { return; }
+
+        inMotion = false;
     }
 
     public void RefreshCard() {
@@ -56,7 +76,7 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
 
     // Called when the mouse first hovers over card
     public void OnPointerEnter(PointerEventData eventData) {
-        if (isPopupCard) { return; }
+        if (isPopupCard || inMotion) { return; }
 
         transform.position = new Vector2(transform.position.x, -2);
         transform.localScale = new Vector2(1.25f, 1.25f);
@@ -64,7 +84,7 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
 
     // Called when the mouse is no longer hovering the card
     public void OnPointerExit(PointerEventData eventData) {
-        if (isPopupCard) { return; }
+        if (isPopupCard || inMotion) { return; }
 
         transform.position = new Vector2(transform.position.x, -2.75f);
         transform.localScale = new Vector2(1, 1);
