@@ -25,9 +25,6 @@ public class MainMenu : MonoBehaviour {
 
         resolutionDropdown.AddOptions(resolutionOptions);
         resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.ClearOptions();
-        resolutionOptions.Reverse();
-        resolutionDropdown.AddOptions(resolutionOptions);
         resolutionDropdown.RefreshShownValue();
     }
     
