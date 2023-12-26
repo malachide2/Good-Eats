@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class EnemyController : MonoBehaviour {
     // References
     [SerializeField] private GameObject gameManagerGO;
     private GameManager gameManager;
     private DeckManager deckManager;
+    [SerializeField] private PlayerUI playerUI;
 
     private EnemyHand enemyHand;
     public GameObject enemyHandGO;
@@ -27,6 +27,8 @@ public class EnemyController : MonoBehaviour {
     }
 
     public IEnumerator TakeTurnRoutine() {
+        StartTurnUI();
+
         enemyHand.DetermineCardsNeeded();
 
         // Ensures AI doesn't always make the best move
@@ -40,7 +42,7 @@ public class EnemyController : MonoBehaviour {
             StartCoroutine(SwapWithTradePileRoutine(deckManager.tradePile[skillMove]));
         }
 
-        yield return new WaitForSeconds(1.2f / gameManager.gameSpeed);
+        yield return new WaitForSeconds(1.2f / GameManager.gameSpeed);
 
         StartCoroutine(enemyHand.CheckRecipeCompletionRoutine());
     }
@@ -75,7 +77,7 @@ public class EnemyController : MonoBehaviour {
         deckManager.topCard[0].MoveCardFromTo(cardToSwap.transform.position, new Vector2(-2 + (2.75f * enemyNumber), 1.6f));
         deckManager.topCard[1].MoveCardFromTo(new Vector2(-2 + (2.75f * enemyNumber), 1.6f), cardToSwap.transform.position);
 
-        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+        yield return new WaitForSeconds(0.5f / GameManager.gameSpeed);
 
         cardToSwap.SetActive(true);
         enemyHand.ingredientCardsGO[5].SetActive(true);
@@ -88,9 +90,16 @@ public class EnemyController : MonoBehaviour {
         deckManager.ShuffleIngredientDeck();
         enemyHand.ingredientCardsGO[5].SetActive(false);
         deckManager.topCard[0].MoveCardFromTo(new Vector2(-2 + (2.75f * enemyNumber), 1.6f), new Vector2(-2, 0));
-        yield return new WaitForSeconds(0.7f / gameManager.gameSpeed);
+        yield return new WaitForSeconds(0.7f / GameManager.gameSpeed);
         enemyHand.DrawIngredientCards(1);
-        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+        yield return new WaitForSeconds(0.5f / GameManager.gameSpeed);
         enemyHand.ingredientCardsGO[5].SetActive(true);
+    }
+
+    private void StartTurnUI() {
+        Transform transform = playerUI.turnPointer.transform;
+        playerUI.turnPointer.transform.localPosition = new Vector2(-690 + (510 * enemyNumber), 475);
+        playerUI.turnPointer.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, -90);
+        playerUI.turnPointer.transform.localScale = new Vector2(0.5f, 0.5f);
     }
 }

@@ -56,7 +56,7 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     private void MoveCard() {
         float animationTime = 0.5f;
         float distance = (float)Math.Sqrt(Math.Pow(position.x - targetPosition.x, 2) + Math.Pow(position.y - targetPosition.y, 2));
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * gameManager.gameSpeed * Time.deltaTime / animationTime);
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * GameManager.gameSpeed * Time.deltaTime / animationTime);
 
         if (transform.position != targetPosition) { return; }
 

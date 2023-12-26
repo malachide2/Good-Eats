@@ -68,7 +68,7 @@ public class DeckManager : MonoBehaviour {
             topCard[i].MoveCardFromTo(topCard[i].originalPosition, new Vector2(-0.9f + (0.6f * i), 0));
         }
 
-        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+        yield return new WaitForSeconds(0.5f / GameManager.gameSpeed);
 
         for (int i = 0; i < 4; i++) {
             // Set Blank Card Active & Assign Top Card
@@ -135,11 +135,11 @@ public class DeckManager : MonoBehaviour {
             oldCard.transform.localScale = new Vector2(0.75f, 0.75f);
             oldCard.inMotion = true;
 
-            yield return new WaitForSeconds(0.75f / gameManager.gameSpeed);
+            yield return new WaitForSeconds(0.75f / GameManager.gameSpeed);
 
             StartCoroutine(playerHand.DrawIngredientCardsRoutine());
 
-            yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+            yield return new WaitForSeconds(0.5f / GameManager.gameSpeed);
 
             playerController.inDeckSwap = false;
             playerController.RecipePhase();

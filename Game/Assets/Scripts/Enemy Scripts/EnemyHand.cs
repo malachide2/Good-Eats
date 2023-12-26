@@ -57,6 +57,8 @@ public class EnemyHand : MonoBehaviour {
             if (enemyController.pointSlider.value >= 100) {
                 enemyController.pointSlider.value = 100;
                 gameManager.EndGame();
+
+                yield break;
             }
 
             // Get a new recipe
@@ -74,18 +76,18 @@ public class EnemyHand : MonoBehaviour {
                 ingredientCardsGO[5 - i].SetActive(false);
             }
 
-            yield return new WaitForSeconds(1 / gameManager.gameSpeed);
+            yield return new WaitForSeconds(1 / GameManager.gameSpeed);
             // Draw new ingredients
             deckManager.ShuffleIngredientDeck();
             DrawIngredientCards(correctIngredients.Count);
 
-            yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+            yield return new WaitForSeconds(0.5f / GameManager.gameSpeed);
             for (int i = 0; i < correctIngredients.Count; i++) {
                 ingredientCardsGO[5 - i].SetActive(true);
             }
         }
 
-        yield return new WaitForSeconds(0.5f / gameManager.gameSpeed);
+        yield return new WaitForSeconds(0.5f / GameManager.gameSpeed);
         gameManager.StartNextTurn();
     }
 

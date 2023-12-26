@@ -25,7 +25,7 @@ public class TopCardMotion : MonoBehaviour {
 
     private void MoveCard() {
         float animationTime = 0.5f;
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * gameManager.gameSpeed * Time.deltaTime / animationTime);
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * GameManager.gameSpeed * Time.deltaTime / animationTime);
 
         // Reset Card
         if (transform.position == targetPosition) {

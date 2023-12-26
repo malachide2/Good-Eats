@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
     public GameObject[] enemies;
     private int playerNumber = -1;
 
-    public float gameSpeed = 2;
+    public static float gameSpeed = 1;
 
     private void Awake() {
         // References
@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour {
 
         yield return new WaitForSeconds(0.5f / gameSpeed);
 
+        myPlayer.GetComponent<PlayerUI>().turnPointer.SetActive(true);
         StartNextTurn();
         
     }
@@ -70,7 +71,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EndGame() {
-        myPlayer.GetComponent<PlayerUI>().gameOverScreen.SetActive(true);
-        myPlayer.GetComponent<PlayerUI>().restartButton.SetActive(true);
+        myPlayer.GetComponent<PlayerUI>().EndGame();
     }
 }

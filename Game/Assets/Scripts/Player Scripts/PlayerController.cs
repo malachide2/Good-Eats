@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,8 +31,10 @@ public class PlayerController : MonoBehaviour {
 
     public void TakeTurn() {
         isTurn = true;
-        // playerUI.StartTurnUI();
         inTradePhase = true;
+        playerUI.turnPointer.transform.localPosition = new Vector2 (-860, -318);
+        playerUI.turnPointer.transform.localRotation = new Quaternion(0, 0, 180, 0);
+        playerUI.turnPointer.transform.localScale = new Vector2(0.75f, 0.75f);
     }
 
     public void RecipePhase() {
