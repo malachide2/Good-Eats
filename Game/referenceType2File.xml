@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTypeDate xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <TypeDate>
+    <guid>a367d5d65eb7ee44797bdc19fa4697b5</guid>
+    <fileName>Assets/Plugins/UnitySweeper/Editor/AssetCollector.cs</fileName>
+    <timeStamp>2023-12-26T02:40:46.6411716-05:00</timeStamp>
+    <typeFullName>
+      <string>UnitySweeper.AssetCollector</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>1c26b46d862918f4f846e1f0a8c47170</guid>
+    <fileName>Assets/Plugins/UnitySweeper/Editor/AssetReferenceCollection.cs</fileName>
+    <timeStamp>2023-12-26T02:40:46.5585563-05:00</timeStamp>
+    <typeFullName>
+      <string>UnitySweeper.AssetReferenceCollection</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>75e705f1a494fae49acf91ef0a62a8e9</guid>
+    <fileName>Assets/Plugins/UnitySweeper/Editor/ClassReferenceCollection.cs</fileName>
+    <timeStamp>2023-12-26T02:40:46.6903754-05:00</timeStamp>
+    <typeFullName>
+      <string>UnitySweeper.ClassReferenceCollection</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>b0735ee6af0f01d43919221aea3ffe82</guid>
+    <fileName>Assets/Plugins/UnitySweeper/Editor/CollectionData.cs</fileName>
+    <timeStamp>2023-12-26T02:40:46.5940464-05:00</timeStamp>
+    <typeFullName>
+      <string>UnitySweeper.CollectionData</string>
+      <string>UnitySweeper.TypeDate</string>
+      <string>UnitySweeper.IReferenceCollection</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>8ef4678e1dcd08d4b92aceaab0f205f1</guid>
+    <fileName>Assets/Plugins/UnitySweeper/Editor/FindUnusedAssetsWindow.cs</fileName>
+    <timeStamp>2023-12-26T02:40:46.6667798-05:00</timeStamp>
+    <typeFullName>
+      <string>UnitySweeper.FindUnusedAssetsWindow</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>f6adf4094b44c244995aa0cdc54920d1</guid>
+    <fileName>Assets/Plugins/UnitySweeper/Editor/ShaderReferenceCollection.cs</fileName>
+    <timeStamp>2023-12-26T02:40:46.617351-05:00</timeStamp>
+    <typeFullName>
+      <string>UnitySweeper.ShaderReferenceCollection</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp-Editor-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>eafd9f3aa5d3ed045a08b7da742a8e25</guid>
+    <fileName>Assets/Scripts/Card Scripts/CardDatabase.cs</fileName>
+    <timeStamp>2023-12-25T23:40:21.5199152-05:00</timeStamp>
+    <typeFullName>
+      <string>CardDatabase</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>1338d5240c8772547b5e1a21e9d6889a</guid>
+    <fileName>Assets/Scripts/Card Scripts/TopCardMotion.cs</fileName>
+    <timeStamp>2023-12-25T23:44:01.4004708-05:00</timeStamp>
+    <typeFullName>
+      <string>TopCardMotion</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>b67c4fba01daef446a9a3d7e606acedc</guid>
+    <fileName>Assets/Scripts/Enemy Scripts/EnemyController.cs</fileName>
+    <timeStamp>2023-12-25T23:01:10.4081392-05:00</timeStamp>
+    <typeFullName>
+      <string>EnemyController</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>64ac7292a1f2e7244b1dba0fbd5f82f8</guid>
+    <fileName>Assets/Scripts/Enemy Scripts/EnemyHand.cs</fileName>
+    <timeStamp>2023-12-25T23:27:59.6559846-05:00</timeStamp>
+    <typeFullName>
+      <string>EnemyHand</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>73f27d08ea567574d8bf644da3c935a6</guid>
+    <fileName>Assets/Scripts/Management Scripts/DeckManager.cs</fileName>
+    <timeStamp>2023-12-26T00:43:38.8562558-05:00</timeStamp>
+    <typeFullName>
+      <string>DeckManager</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>97293f1cf3f2c984fa4b99bc618bb95e</guid>
+    <fileName>Assets/Scripts/Management Scripts/GameManager.cs</fileName>
+    <timeStamp>2023-12-25T22:40:33.0899992-05:00</timeStamp>
+    <typeFullName>
+      <string>GameManager</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>7c9113e49927e3e4baed60a28edecee3</guid>
+    <fileName>Assets/Scripts/Player Scripts/PlayerController.cs</fileName>
+    <timeStamp>2023-12-25T22:59:47.3697276-05:00</timeStamp>
+    <typeFullName>
+      <string>PlayerController</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>547432759d6cdba4083acb8260049cf3</guid>
+    <fileName>Assets/Scripts/Player Scripts/PlayerHand.cs</fileName>
+    <timeStamp>2023-12-26T00:45:43.9116381-05:00</timeStamp>
+    <typeFullName>
+      <string>PlayerHand</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>fd522f91c1c1c0547a8950ee39c1b5f2</guid>
+    <fileName>Assets/Scripts/Player Scripts/PlayerUI.cs</fileName>
+    <timeStamp>2023-12-26T03:54:12.7903861-05:00</timeStamp>
+    <typeFullName>
+      <string>PlayerUI</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>1dfc5edbb1f63094e94789daa91b822b</guid>
+    <fileName>Assets/Scripts/Small Scripts/ClickableDeck.cs</fileName>
+    <timeStamp>2023-12-15T18:11:00.6553895-05:00</timeStamp>
+    <typeFullName>
+      <string>ClickableDeck</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>00830080514456b4697159b5c65fcdbf</guid>
+    <fileName>Assets/Scripts/Small Scripts/MainMenu.cs</fileName>
+    <timeStamp>2023-12-26T03:56:42.137865-05:00</timeStamp>
+    <typeFullName>
+      <string>MainMenu</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>66b2ec3ed4e57a540af48b4aecb3c614</guid>
+    <fileName>Assets/Scripts/Card Scripts/Ingredient Cards/IngredientCard.cs</fileName>
+    <timeStamp>2023-06-27T23:59:31.6767439-04:00</timeStamp>
+    <typeFullName>
+      <string>IngredientCard</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>6b6c20fe3c01d734aaa5af7ccd271db7</guid>
+    <fileName>Assets/Scripts/Card Scripts/Ingredient Cards/IngredientCardInteractibility.cs</fileName>
+    <timeStamp>2023-12-26T00:57:18.4323726-05:00</timeStamp>
+    <typeFullName>
+      <string>IngredientCardInteractibility</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>9c8b168dbc921334588fea9a020b3142</guid>
+    <fileName>Assets/Scripts/Card Scripts/Recipe Cards/RecipeCard.cs</fileName>
+    <timeStamp>2021-09-16T19:51:44-04:00</timeStamp>
+    <typeFullName>
+      <string>RecipeCard</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+  <TypeDate>
+    <guid>314609e4d8e36a54a85ae0b8283d7254</guid>
+    <fileName>Assets/Scripts/Card Scripts/Recipe Cards/RecipeCardInteractibility.cs</fileName>
+    <timeStamp>2023-12-25T23:39:22.2116731-05:00</timeStamp>
+    <typeFullName>
+      <string>RecipeCardInteractibility</string>
+    </typeFullName>
+    <assembly>Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+  </TypeDate>
+</ArrayOfTypeDate>

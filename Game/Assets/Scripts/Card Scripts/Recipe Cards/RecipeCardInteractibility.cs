@@ -17,7 +17,6 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
     [Header("References")]
     [SerializeField] private GameObject gameManagerGO;
     private GameManager gameManager;
-    private CardDatabase cardDatabase;
 
     [SerializeField] private GameObject myPlayer;
     private PlayerUI playerUI;
@@ -33,7 +32,6 @@ public class RecipeCardInteractibility : MonoBehaviour, IPointerEnterHandler, IP
     private void Awake() {
         // References
         gameManager = gameManagerGO.GetComponent<GameManager>();
-        cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
         playerUI = myPlayer.GetComponent<PlayerUI>();
 
         position = transform.position;

@@ -1,12 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using System.Data;
-using System.Security.Cryptography;
-using UnityEngine.SocialPlatforms.GameCenter;
 
 public class PlayerUI : MonoBehaviour {
     // References
@@ -20,7 +16,7 @@ public class PlayerUI : MonoBehaviour {
 
     [SerializeField] private GameObject backgroundBlur;
 
-    [Header("Options")] // Options Refers to Menu including both Settings & Quit Button, Settings refers to Hardware settings (FPS, Volume, Etc) 
+    [Header("Options")] // Options Refers to Menu including both Settings & Quit Button
     [SerializeField] private GameObject enterOptionsMenuButton;
     [SerializeField] private GameObject optionsMenu;
     [SerializeField] private GameObject enterInstructionsMenuButton;
@@ -121,9 +117,7 @@ public class PlayerUI : MonoBehaviour {
     }
 
     public void SetQuality(int qualityIndex) {
-        if (qualityIndex == 0) { QualitySettings.SetQualityLevel(5); }
-        else if (qualityIndex == 1) { QualitySettings.SetQualityLevel(3); }
-        else { QualitySettings.SetQualityLevel(0); }
+        QualitySettings.SetQualityLevel(qualityIndex);
     }
 
     public void SetFullscreen(bool isFullscreen) {

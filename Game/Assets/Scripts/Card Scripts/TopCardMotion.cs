@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class TopCardMotion : MonoBehaviour {
     [SerializeField] private GameManager gameManager;

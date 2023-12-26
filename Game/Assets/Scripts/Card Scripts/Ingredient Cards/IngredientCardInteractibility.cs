@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using Unity.VisualScripting;
+using Unity.Collections;
 
 public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public IngredientCard card;
@@ -14,7 +16,6 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     [Header("References")]
     [SerializeField] private GameObject gameManagerGO;
     private GameManager gameManager;
-    private CardDatabase cardDatabase;
     private DeckManager deckManager;
 
     [SerializeField] private GameObject myPlayer;
@@ -27,21 +28,23 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
     [SerializeField] private bool isPopupCard;
 
     [Header("Position")]
-    public Vector2 position;
-    public Vector3 targetPosition;
+    [ReadOnly] public Vector2 originalPosition;
+    private Vector3 targetPosition;
+    private float distance;
+    private bool inMotion;
 
     public bool lockedIn = false;
-    public bool inMotion;
 
     private void Awake() {
         // References
         gameManager = gameManagerGO.GetComponent<GameManager>();
-        cardDatabase = gameManagerGO.GetComponent<CardDatabase>();
         deckManager = gameManagerGO.GetComponent<DeckManager>();
 
         playerHand = myPlayer.GetComponent<PlayerHand>();
         playerController = myPlayer.GetComponent<PlayerController>();
         playerUI = myPlayer.GetComponent<PlayerUI>();
+
+        originalPosition = transform.position;
     }
 
     void Update() {
@@ -49,33 +52,37 @@ public class IngredientCardInteractibility : MonoBehaviour, IPointerEnterHandler
         MoveCard();
     }
 
-    public void DeterminePosition() {
-        position = transform.position;
-    }
-
     private void MoveCard() {
         float animationTime = 0.5f;
-        float distance = (float)Math.Sqrt(Math.Pow(position.x - targetPosition.x, 2) + Math.Pow(position.y - targetPosition.y, 2));
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, distance * GameManager.gameSpeed * Time.deltaTime / animationTime);
 
+        // Reset Card
         if (transform.position != targetPosition) { return; }
 
         inMotion = false;
-        transform.position = position;
+        transform.position = originalPosition;
 
         if (playerController.inTradePhase) {
             if (playerController.inDeckSwap) {
-                ResetChosen();
                 gameObject.SetActive(false);
             }
             else {
-                if (!isTradePileCard) { ResetChosen(); }
                 RefreshCard();
             }
+
+            if (!isTradePileCard) { ResetChosen(); }
         }
-        else if (playerController.inRecipePhase) {
+        else { // Recipe Phase
             gameObject.SetActive(false);
         }
+    }
+
+    public void MoveCardFromTo(Vector2 startLocation, Vector2 endLocation) {
+        transform.position = startLocation;
+        targetPosition = endLocation;
+        distance = (float)Math.Sqrt(Math.Pow(startLocation.x - endLocation.x, 2) + Math.Pow(startLocation.y - endLocation.y, 2));
+
+        inMotion = true;
     }
 
     public void ChangeCard(IngredientCard replacementCard) {

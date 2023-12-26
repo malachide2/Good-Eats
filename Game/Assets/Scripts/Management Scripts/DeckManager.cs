@@ -130,10 +130,8 @@ public class DeckManager : MonoBehaviour {
             ingredientCardDeck.Add(oldCard.card);
             ShuffleIngredientDeck();
 
-            oldCard.DeterminePosition();
-            oldCard.targetPosition = new Vector2(-2, 0);
+            oldCard.MoveCardFromTo(oldCard.originalPosition, new Vector2(-2, 0));
             oldCard.transform.localScale = new Vector2(0.75f, 0.75f);
-            oldCard.inMotion = true;
 
             yield return new WaitForSeconds(0.75f / GameManager.gameSpeed);
 

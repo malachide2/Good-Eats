@@ -1,12 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
-using System.Data;
-using System.Security.Cryptography;
-using UnityEngine.SocialPlatforms.GameCenter;
 
 public class MainMenu : MonoBehaviour {
     [SerializeField] GameObject optionsMenu;
@@ -55,9 +50,7 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void SetQuality(int qualityIndex) {
-        if (qualityIndex == 0) { QualitySettings.SetQualityLevel(5); }
-        else if (qualityIndex == 1) { QualitySettings.SetQualityLevel(3); }
-        else { QualitySettings.SetQualityLevel(0); }
+        QualitySettings.SetQualityLevel(qualityIndex);
     }
 
     public void SetFullscreen(bool isFullscreen) {

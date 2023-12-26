@@ -81,12 +81,6 @@ public class PlayerHand : MonoBehaviour {
 
     public IEnumerator SwapCardsRoutine() {
         if (swapCards.Count == 2) {
-            foreach (GameObject card in swapCards) {
-                IngredientCardInteractibility cardInteractibility = card.GetComponent<IngredientCardInteractibility>();
-                cardInteractibility.DeterminePosition();
-                cardInteractibility.inMotion = true;
-            }
-
             IngredientCardInteractibility card1 = swapCards[0].GetComponent<IngredientCardInteractibility>();
             IngredientCardInteractibility card2 = swapCards[1].GetComponent<IngredientCardInteractibility>();
             swapCards.Clear();
@@ -94,8 +88,8 @@ public class PlayerHand : MonoBehaviour {
             IngredientCard originalCard1 = card1.card;
             card1.card = card2.card;
             card2.card = originalCard1;
-            card1.targetPosition = card2.position;
-            card2.targetPosition = card1.position;
+            card1.MoveCardFromTo(card1.originalPosition, card2.originalPosition);
+            card2.MoveCardFromTo(card2.originalPosition, card1.originalPosition);
 
             yield return new WaitForSeconds(0.5f / GameManager.gameSpeed);
 
@@ -137,6 +131,8 @@ public class PlayerHand : MonoBehaviour {
             if (playerUI.pointSlider.value >= 100) {
                 playerUI.pointSlider.value = 100;
                 gameManager.EndGame();
+
+                yield break;
             }
 
             recipeCard.GetComponent<RecipeCardInteractibility>().targetPosition = new Vector2(0, 0);
@@ -145,10 +141,9 @@ public class PlayerHand : MonoBehaviour {
 
             // Shuffle old ingredients into deck
             foreach (GameObject correctIngredient in correctIngredients) {
-                deckManager.ingredientCardDeck.Add(correctIngredient.GetComponent<IngredientCardInteractibility>().card);
-                correctIngredient.GetComponent<IngredientCardInteractibility>().DeterminePosition();
-                correctIngredient.GetComponent<IngredientCardInteractibility>().targetPosition = new Vector2(-2, 0);
-                correctIngredient.GetComponent<IngredientCardInteractibility>().inMotion = true;
+                IngredientCardInteractibility correctCard = correctIngredient.GetComponent<IngredientCardInteractibility>();
+                deckManager.ingredientCardDeck.Add(correctCard.card);
+                correctCard.MoveCardFromTo(correctCard.originalPosition, new Vector2(-2, 0));
             }
             deckManager.ShuffleIngredientDeck();
 
